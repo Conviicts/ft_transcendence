@@ -1,18 +1,18 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { UserService } from '../users/user.service';
+import { Injectable } from "@nestjs/common";
+
+import { User42DTO } from "../users/dto/user.dto";
+import { UserService } from "../users/user.service"
+import { User } from "../users/entities/user.entity"
 
 @Injectable()
-export class AuthService {
-    constructor(
-        @Inject(UserService)
-        private userService: UserService,
-    ) {}
+export class AuthService{
+	constructor(private userService: UserService) {}
 
-    async validateSignin(userId: string): Promise<any> {
-        let user = await this.userService.findUser(userId);
+	async validateUser(userData: User42DTO): Promise<User>{
+		return this.userService.validate42User(userData);
+	}
 
-        if (!user)
-            user = await this.userService.addUser(userId);
-        return user;
-    }
+	createUser(userData: User42DTO): Promise<User> {
+		return this.userService.create42User(userData);
+	}
 }

@@ -1,37 +1,34 @@
-import {
-    Controller,
-    Get,
-    Post,
-    Req,
-    Res,
-    UseGuards,
-  } from '@nestjs/common';
-import { FortyTwoGuard } from '../../middlewares/guards/auth.guard';
-import { ConfigService } from '@nestjs/config';
-import { Request } from 'express';
-import { AuthService } from './auth.service';
+import { Controller, Get, Res, UseGuards, Req } from '@nestjs/common';
+import { Response } from 'express';
+import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { JwtService } from '@nestjs/jwt';
+import { HttpService } from '@nestjs/axios';
 
-@Controller('auth')
+import { FortyTwoGuard } from './guards/auth.guard';
+import { JwtPayload } from '../users/strategy/jwt.strategy';
+
+@ApiTags('auth')
+@Controller('api/auth/')
 export class AuthController {
-    constructor(
-      private configService: ConfigService,
-      private authService: AuthService,
-    ) {}
-  
-    @Get('/login')
-    @UseGuards(FortyTwoGuard)
-    login(@Res() res): any {
-      res.redirect(`http://localhost:${process.env.PORT}`);
-    }
+	constructor (
+		private httpService: HttpService,
+		private jwtService: JwtService,
+	) {}
 
-    @Post('/logout')
-    async logout(@Req() req: Request): Promise<void> {
-        if (!req.session) return;
-        await new Promise<void>((resolve, reject) => {
-            req.session.destroy((err) => {
-                if (err) reject(err);
-                resolve();
-            });
-        });
-    }
+	@ApiOperation({summary: 'Authentication with 42 API'})
+	@Get('login')
+	@UseGuards(FortyTwoGuard)
+	login() { }
+
+	@ApiOperation({summary: 'Redirection to front after 42 authentication'})
+	@Get('redirect')
+	@UseGuards(FortyTwoGuard)
+	async redirect(@Res({passthrough: true}) res: Response, @Req() req) {
+		const username = req.user['username'];
+		let auth: boolean = false;
+		const payload: JwtPayload = { username, auth };
+		const accessToken: string = await this.jwtService.sign(payload);
+		res.cookie('jwt', accessToken, {httpOnly: true});
+		res.redirect(process.env.FRONT_URI);
+	}
 }

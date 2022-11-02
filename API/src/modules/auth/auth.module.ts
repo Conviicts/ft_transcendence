@@ -1,17 +1,20 @@
-import { Module } from '@nestjs/common';
-import { UserModule } from '../users/user.module';
+import { HttpModule } from '@nestjs/axios';
+import { forwardRef, Module } from '@nestjs/common';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { FortyTwoStrategy } from './auth.strategy';
-import { HttpModule } from '@nestjs/axios';
+import { UserModule } from '../users/user.module';
+import { FortyTwoStrategy } from './strategy/auth.strategy';
 
 @Module({
-  controllers: [AuthController],
-  providers: [
-    FortyTwoStrategy,
-    AuthService,
-  ],
-  imports: [HttpModule, UserModule],
-  exports: [AuthService],
+	imports: [
+		forwardRef(() => UserModule), 
+		HttpModule
+	],
+	controllers: [AuthController],
+	providers: [
+		FortyTwoStrategy,
+		AuthService,
+	],
 })
 export class AuthModule {}

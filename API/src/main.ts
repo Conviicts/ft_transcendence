@@ -1,40 +1,29 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './modules/app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
-import * as passport from 'passport';
-import * as session from 'express-session';
+import { AppModule } from './modules/app.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  // Check if CORS env exists
-  if (!process.env.CORS) process.env.CORS = '';
+  const app = await NestFactory.create(AppModule);
 
-  const app = await NestFactory.create(AppModule, { 
-    cors: {
-      credentials: true,
-      origin: process.env.CORS.split(' ').filter((value) => value.length > 0)
-    }
+  app.enableCors({
+    origin: true,
+    credentials: true
   });
+  app.use(cookieParser());
 
-  app.use(
-    session({
-      cookie: {
-        maxAge: 604800000, 
-        httpOnly: false,
-        secure: false,
-      },
-      secret: 'secret',
-      name: 'auth',
-      resave: false,
-      rolling: true,
-      saveUninitialized: false,
-    }),
-  );
+  const config = new DocumentBuilder()
+    .setTitle('ft_transcendence')
+    .setDescription('42 transcendence project')
+    .setVersion('1.0')
+    .build();
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
-  // Set base link to /api/v1
-  app.setGlobalPrefix('api/v1');
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.API_PORT || 3000);
 }
 bootstrap();

@@ -17,7 +17,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column("text", {default: "empty"})
+  @Column("text", {default: ""})
   profile_picture: string;
 
   @Column("text", {default: ""})

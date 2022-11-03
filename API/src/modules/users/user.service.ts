@@ -12,14 +12,14 @@ import { JwtPayload } from './strategy/jwt.strategy';
 @Injectable()
 export class UserService {
 	constructor(
-		@InjectRepository(User)
-		protected readonly usersRepository: UserRepository,
+		@InjectRepository(UserRepository)
+		private userRepository: UserRepository,
 		private jwtService: JwtService,
-	) {}
+	) { }
 
 	async register(userData: NewUserDTO, @Res({passthrough: true}) res: Response): Promise<{accessToken: string}> {
 		const {username, password } = userData;
-		const user: Promise<User> = this.usersRepository.createUser(userData);
+		const user: Promise<User> = this.userRepository.createUser(userData);
 		if (await bcrypt.compare(password, (await user).password)) {
 			let auth: boolean = false;
 			const payload: JwtPayload = { username, auth };
@@ -36,9 +36,9 @@ export class UserService {
 		const { id, password } = userData;
 		let user: User = undefined;
 
-		user = await this.usersRepository.findOne({ where: { username: id } });
+		user = await this.userRepository.findOne({ where: { username: id } });
 		if (user === undefined) {
-			user = await this.usersRepository.findOne({ where: { email: id } });
+			user = await this.userRepository.findOne({ where: { email: id } });
 		}
 		if (user && (await bcrypt.compare(password, user.password))) {
 			const username = user.username;
@@ -54,7 +54,7 @@ export class UserService {
 
 	async currentUser(user: User): Promise<Partial<User>>{
 		let userFound: User = undefined;
-		userFound = await this.usersRepository.findOne({ where: { userId: user.userId } });
+		userFound = await this.userRepository.findOne({ where: { userId: user.userId } });
 		if (!user)
 			throw new NotFoundException('No user found');
 		let { password, ...res } = user;
@@ -65,7 +65,7 @@ export class UserService {
 	async updateUser(updateUser: UpdateUserDTO, user: User, @Res({passthrough: true}) res: Response): Promise<void> {
 		const { username } = updateUser;
 
-		const updated: boolean = await this.usersRepository.updateUser(updateUser, user);
+		const updated: boolean = await this.userRepository.updateUser(updateUser, user);
 		if (updated === true && username !== undefined)
 		{
 		   	let auth: boolean = true;
@@ -77,7 +77,7 @@ export class UserService {
 
 	async deleteUser(id: string, @Res({passthrough: true}) res: Response): Promise<void> {
 		res.clearCookie('jwt');
-		const result = await this.usersRepository.delete(id);
+		const result = await this.userRepository.delete(id);
 	}
 
 	get2FA(user: User): boolean {
@@ -88,7 +88,7 @@ export class UserService {
 		user.twoFactor = twoFA;
 		const username = user.username;
 		try {
-			await this.usersRepository.save(user);
+			await this.userRepository.save(user);
 			let auth: boolean = true;
 			const payload: JwtPayload = { username, auth };
 			const accessToken: string = await this.jwtService.sign(payload);
@@ -102,7 +102,7 @@ export class UserService {
 	async getIsAdmin(userId: string, userIsAdmin: User): Promise<boolean> {
 		let user: User = undefined;
 
-		user = await this.usersRepository.findOne({ where: { userId: userId } });
+		user = await this.userRepository.findOne({ where: { userId: userId } });
 		if (!user)
 			throw new NotFoundException('No user found');
 		return user.isAdmin;
@@ -115,13 +115,13 @@ export class UserService {
 			throw new UnauthorizedException('Cannot change your own admin state');
 		}
 
-		user = await this.usersRepository.findOne({ where: { userId: userId } });
+		user = await this.userRepository.findOne({ where: { userId: userId } });
 		if (!user)
 			throw new NotFoundException('No user found');
 
 		user.isAdmin = bool;
 		try {
-			await this.usersRepository.save(user);
+			await this.userRepository.save(user);
 		} catch (e) {
 			console.log(e);
 			throw new InternalServerErrorException();
@@ -129,20 +129,19 @@ export class UserService {
 	}
 
 	create42User(userData: User42DTO): Promise<User>{
-		return this.usersRepository.create42User(userData)
+		return this.userRepository.create42User(userData);
 	}
 
 	async validate42User(userData: User42DTO): Promise<User> {
 		let user: User = undefined;
 
 		const { login42 } = userData;
-		user = await this.usersRepository.findOne({ where: { login42 } });
+		user = await this.userRepository.findOne({ where: { login42 } });
 		if (user)
 			return user;
 		let { username } = userData;
-		user = await this.usersRepository.findOne({ where: { username } });
-		if (user)
-		{
+		user = await this.userRepository.findOne({ where: { username } });
+		if (user) {
 			const rand = Math.random().toString(16).substr(2, 5);
 			username = username + '-' + rand;
 			userData.username = username;

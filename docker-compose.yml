@@ -5,8 +5,8 @@ services:
     container_name: ft_transcendence-API
     env_file:
       - ./.env
-    # volumes:
-    #   - "uploads:/app/uploads"
+    ports:
+      - "5432:5432"
     links:
       - database
     depends_on:
@@ -22,6 +22,20 @@ services:
       - ./.env
     restart: unless-stopped
 
+  pgadmin:
+    container_name: ft_transcendence-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    links:
+      - database
+    depends_on:
+      - database
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jode-vri@student.42.fr
+      PGADMIN_DEFAULT_PASSWORD: toor
+    ports:
+      - "5050:80"
+
   proxy:
     image: nginx:1.19
     container_name: ft_transcendence-proxy
@@ -32,7 +46,7 @@ services:
     depends_on:
       - api
     ports:
-      - "80:80"
+      - "8080:80"
     restart: unless-stopped
 
 volumes:

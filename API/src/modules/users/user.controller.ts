@@ -28,8 +28,8 @@ import { NewUserDTO, LoginUserDTO, UpdateUserDTO } from './dto/user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOperation({ description: 'User registration password' })
-  @ApiOkResponse({ description: 'access token' })
+  @ApiOperation({ description: 'User sign-up' })
+  @ApiOkResponse({ description: 'Provide you an access token' })
   @ApiConflictResponse({ description: 'Username or email already exist' })
   @Post('/register')
   async register(
@@ -39,10 +39,10 @@ export class UserController {
     return this.userService.register(userData, res);
   }
 
-  @ApiOperation({ description: 'User login' })
-  @ApiOkResponse({ description: 'access token' })
+  @ApiOperation({ description: 'User sign-in' })
+  @ApiOkResponse({ description: 'Provide you an access token' })
   @ApiUnauthorizedResponse({
-    description: 'Please check your login credentials',
+    description: "You don't have access to this",
   })
   @Post('/login')
   async signIn(
@@ -53,6 +53,10 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Get all info of current user' })
+  @ApiOkResponse({ description: 'Provide you your user information' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
   @UseGuards(AuthGuard('jwt'), UserGuard)
   @Get('/')
   me(@Req() req): Promise<Partial<User>> {
@@ -64,7 +68,10 @@ export class UserController {
     summary: 'Update user data',
     description: 'Update username, email or password',
   })
-  @ApiOkResponse({ description: 'User account' })
+  @ApiOkResponse({ description: 'Provide you your updated user information' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
   @UseGuards(AuthGuard('jwt'), UserGuard)
   @Patch('/')
   updateUser(
@@ -80,7 +87,10 @@ export class UserController {
     summary: 'delete user account',
     description: 'delete an user',
   })
-  @ApiOkResponse({ description: 'User Deleted' })
+  @ApiOkResponse({ description: 'Confirms that your account has been deleted' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
   @UseGuards(AuthGuard('jwt'), UserGuard)
   @Delete('/')
   deleteUser(
@@ -91,7 +101,11 @@ export class UserController {
     return this.userService.deleteUser(user_id, res);
   }
 
-  @ApiOperation({ summary: 'disconnect the user' })
+  @ApiOperation({ summary: 'Logs you out' })
+  @ApiOkResponse({ description: 'Confirms that you have logged out' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
   @UseGuards(AuthGuard('jwt'))
   @Get('/logout')
   logout(@Res({ passthrough: true }) res: Response) {

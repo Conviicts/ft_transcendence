@@ -13,32 +13,32 @@ export class NewUserDTO {
   @MinLength(6)
   @MaxLength(20)
   @IsAlphanumeric()
-  @ApiProperty({ description: 'must not be empty' })
+  @ApiProperty({ description: 'your username' })
   username: string;
 
   @IsNotEmpty()
   @IsEmail()
-  @ApiProperty({ description: 'must not be empty' })
+  @ApiProperty({ description: 'your email' })
   email: string;
 
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(32)
-  @ApiProperty({ description: 'must not be empty' })
+  @ApiProperty({ description: 'your password' })
   password: string;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'must not be empty' })
+  @ApiProperty({ description: 'your password confirmation' })
   passwordConfirm: string;
 }
 
 export class LoginUserDTO {
   @IsNotEmpty()
-  @ApiProperty({ description: 'must not be empty' })
+  @ApiProperty({ description: 'your username' })
   id: string;
 
   @IsNotEmpty()
-  @ApiProperty({ description: 'must not be empty' })
+  @ApiProperty({ description: 'your password' })
   password: string;
 }
 

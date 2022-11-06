@@ -74,7 +74,9 @@ export class UserService {
       where: { userId: user.userId },
     });
     if (!userFound) throw new NotFoundException('No user found');
-    return userFound;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = userFound;
+    return result;
   }
 
   async updateUser(

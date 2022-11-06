@@ -4,6 +4,8 @@ import {
   NotFoundException,
   Res,
   InternalServerErrorException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -131,6 +133,16 @@ export class UserService {
     user = await this.userRepository.findOne({ where: { userId: userId } });
     if (!user) throw new NotFoundException('No user found');
     return user.isAdmin;
+  }
+
+  async getUser(userId: string): Promise<User> {
+    let user = null;
+    if (userId)
+      user = await this.userRepository.findOne({ where: { userId } });
+    if (!user)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    const { password, ...result } = user;
+    return result;
   }
 
   async updateIsAdmin(

@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
@@ -15,7 +14,7 @@ import { provideCustomRepository } from './custom-repository.util';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    PassportModule.register({defaultStrategy: 'jwt'}),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.SECRET,
       signOptions: {
@@ -24,7 +23,11 @@ import { provideCustomRepository } from './custom-repository.util';
     }),
   ],
   controllers: [UserController],
-  providers: [provideCustomRepository(User, UserRepository), UserService, JwtStrategy],
+  providers: [
+    provideCustomRepository(User, UserRepository),
+    UserService,
+    JwtStrategy,
+  ],
   exports: [JwtStrategy, PassportModule, UserService, JwtModule],
 })
 export class UserModule {}

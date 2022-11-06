@@ -7,14 +7,8 @@ import { UserModule } from '../users/user.module';
 import { FortyTwoStrategy } from './strategy/auth.strategy';
 
 @Module({
-	imports: [
-		forwardRef(() => UserModule), 
-		HttpModule
-	],
-	controllers: [AuthController],
-	providers: [
-		FortyTwoStrategy,
-		AuthService,
-	],
+  imports: [forwardRef(() => UserModule), HttpModule],
+  controllers: [AuthController],
+  providers: [FortyTwoStrategy, AuthService],
 })
 export class AuthModule {}

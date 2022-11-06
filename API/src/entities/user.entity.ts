@@ -2,12 +2,9 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
   CreateDateColumn,
   BaseEntity,
 } from 'typeorm';
-import { IsNotEmpty, IsString } from 'class-validator';
-import { Exclude, Expose, Transform } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {

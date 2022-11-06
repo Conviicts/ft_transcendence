@@ -9,7 +9,7 @@ import {
 
 import { UserState } from '../interfaces/user-state';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   userId: string;

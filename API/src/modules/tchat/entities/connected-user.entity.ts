@@ -1,17 +1,22 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import { User } from "../../users/entities/user.entity";
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class ConnectedUser {
+  @PrimaryGeneratedColumn('uuid')
+  connectedUserId: string;
 
-	@PrimaryGeneratedColumn("uuid")
-	connectedUserId: string;
+  @Column('text')
+  socketId: string;
 
-	@Column("text")
-	socketId: string;
-
-	@ManyToOne(() => User, user => user.connections, {onDelete:'CASCADE'})
-	@JoinColumn()
-	user:User;
+  @ManyToOne(() => User, (user) => user.connections, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  user: User;
 }

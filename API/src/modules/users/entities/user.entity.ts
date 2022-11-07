@@ -44,13 +44,13 @@ export class User {
   @Column('text', { default: UserState.OFFLINE })
   status: UserState;
 
-  @OneToMany(() => ConnectedUser, connection => connection.user)
+  @OneToMany(() => ConnectedUser, (connection) => connection.user)
   connections: ConnectedUser[];
 
-  @OneToMany(() => JoinedChannel, joinedChannel => joinedChannel.channel)
+  @OneToMany(() => JoinedChannel, (joinedChannel) => joinedChannel.channel)
   joinedChannels: JoinedChannel[];
 
-  @OneToMany(() => Message, message => message.user)
+  @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
   @CreateDateColumn()

@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserModule } from '../users/user.module';
 import { ChannelService } from './services/channel.service';
-import { Channel } from './entities/channel.entity'
+import { Channel } from './entities/channel.entity';
 import { User } from '../users/entities/user.entity';
 import { UserRepository } from '../users/user.repository';
 import { ConnectedUser } from './entities/connected-user.entity';
@@ -16,12 +16,17 @@ import { UserRole } from '../users/entities/user-role.entity';
 import { UserRoleService } from './services/user-role.service';
 import { TchatGateway } from './tchat.gateway';
 
-
 import { provideCustomRepository } from '../users/custom-repository.util';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Channel, ConnectedUser, Message, JoinedChannel, UserRole]),
+    TypeOrmModule.forFeature([
+      Channel,
+      ConnectedUser,
+      Message,
+      JoinedChannel,
+      UserRole,
+    ]),
     UserModule,
   ],
   providers: [
@@ -31,7 +36,7 @@ import { provideCustomRepository } from '../users/custom-repository.util';
     ConnectedUserService,
     MessageService,
     JoinedChannelService,
-    UserRoleService
+    UserRoleService,
   ],
   exports: [TchatGateway],
 })

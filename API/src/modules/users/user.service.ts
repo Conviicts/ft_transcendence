@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Injectable,
   UnauthorizedException,
@@ -11,8 +12,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { Socket } from 'socket.io';
-import { parse } from 'cookie';
 
 import { User } from './entities/user.entity';
 import {
@@ -115,10 +114,7 @@ export class UserService {
     return user.twoFactor;
   }
 
-  async updateStatus(
-    status: UserState,
-    userId: string,
-  ): Promise<void> {
+  async updateStatus(status: UserState, userId: string): Promise<void> {
     let res: User = undefined;
 
     res = await this.userRepository.findOne({ where: { userId } });
@@ -158,10 +154,8 @@ export class UserService {
 
   async getUser(userId: string): Promise<User> {
     let user = null;
-    if (userId)
-      user = await this.userRepository.findOne({ where: { userId } });
-    if (!user)
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    if (userId) user = await this.userRepository.findOne({ where: { userId } });
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     const { password, ...result } = user;
     return result;
   }

@@ -11,6 +11,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { Socket } from 'socket.io';
+import { parse } from 'cookie';
 
 import { User } from './entities/user.entity';
 import {
@@ -21,6 +23,7 @@ import {
 } from './dto/user.dto';
 import { UserRepository } from './user.repository';
 import { JwtPayload } from './strategy/jwt.strategy';
+import { UserState } from './interfaces/user-state.interface';
 
 @Injectable()
 export class UserService {
@@ -110,6 +113,24 @@ export class UserService {
 
   get2FA(user: User): boolean {
     return user.twoFactor;
+  }
+
+  async updateStatus(
+    status: UserState,
+    userId: string,
+  ): Promise<void> {
+    let res: User = undefined;
+
+    res = await this.userRepository.findOne({ where: { userId } });
+    if (!res) throw new NotFoundException('No user found');
+
+    res.status = status;
+    try {
+      await this.userRepository.save(res);
+    } catch (e) {
+      console.log(e);
+      throw new InternalServerErrorException();
+    }
   }
 
   async update2FA(twoFA: boolean, user: User, res: Response): Promise<void> {

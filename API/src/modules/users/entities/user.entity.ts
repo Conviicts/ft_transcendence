@@ -5,9 +5,13 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
-import { UserState } from '../interfaces/user-state';
+import { UserState } from '../interfaces/user-state.interface';
+import { JoinedChannel } from '../../tchat/entities/joined-channel.entity';
+import { Message } from '../../tchat/entities/message.entity';
+import { ConnectedUser } from '../../tchat/entities/connected-user.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -39,6 +43,15 @@ export class User {
 
   @Column('text', { default: UserState.OFFLINE })
   status: UserState;
+
+  @OneToMany(() => ConnectedUser, connection => connection.user)
+  connections: ConnectedUser[];
+
+  @OneToMany(() => JoinedChannel, joinedChannel => joinedChannel.channel)
+  joinedChannels: JoinedChannel[];
+
+  @OneToMany(() => Message, message => message.user)
+  messages: Message[];
 
   @CreateDateColumn()
   createdAt: Date;

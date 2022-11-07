@@ -1,38 +1,38 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 
+import { UserModule } from '../users/user.module';
+import { ChannelService } from './services/channel.service';
+import { Channel } from './entities/channel.entity'
 import { User } from '../users/entities/user.entity';
 import { UserRepository } from '../users/user.repository';
-import { UserService } from '../users/user.service';
-import { ChannelController } from './channel.controller';
-import { ChannelService } from './services/channel.service'
-import { Channel } from './entities/channel.entity';
-import { JwtStrategy } from '../users/strategy/jwt.strategy';
+import { ConnectedUser } from './entities/connected-user.entity';
+import { ConnectedUserService } from './services/connected-user.service';
+import { Message } from './entities/message.entity';
+import { JoinedChannel } from './entities/joined-channel.entity';
+import { MessageService } from './services/message.service';
+import { JoinedChannelService } from './services/joined-channel.service';
+import { UserRole } from '../users/entities/user-role.entity';
+import { UserRoleService } from './services/user-role.service';
+import { TchatGateway } from './tchat.gateway';
+
 
 import { provideCustomRepository } from '../users/custom-repository.util';
-import { TextChannel } from './entities/text-channel.entity';
-import { Log } from './entities/log.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Channel, TextChannel, User, Log]),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: process.env.SECRET,
-      signOptions: {
-        expiresIn: 86400,
-      },
-    }),
+    TypeOrmModule.forFeature([Channel, ConnectedUser, Message, JoinedChannel, UserRole]),
+    UserModule,
   ],
-  controllers: [ChannelController],
   providers: [
+    TchatGateway,
     provideCustomRepository(User, UserRepository),
     ChannelService,
-    UserService,
-    JwtStrategy,
+    ConnectedUserService,
+    MessageService,
+    JoinedChannelService,
+    UserRoleService
   ],
-  exports: [],
+  exports: [TchatGateway],
 })
 export class TchatModule {}

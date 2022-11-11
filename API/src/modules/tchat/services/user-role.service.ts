@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 
 import { UserRole } from '../../users/entities/user-role.entity';
 import { IUserRole } from '../../users/interfaces/user.interface';
+import { Channel } from '../entities/channel.entity';
+import { IChannel } from '../interfaces/channel.interface';
 
 @Injectable()
 export class UserRoleService {
@@ -62,7 +64,7 @@ export class UserRoleService {
     return newRole;
   }
 
-  // async findUserByChannel(channel: Channel, userId: string): Promise<IUserRole> {
-  //     return this.userRoleRepository.findOne({ where: { channel: channel as FindOptionsWhere<Channel>, userId: userId } }); //TODO: fix fking thing
-  // }
+  async findUserByChannel(channel: IChannel, userId: string): Promise<IUserRole> {
+      return this.userRoleRepository.findOne({ where: { channel: channel as unknown as FindOptionsWhere<Channel>, userId: userId } });
+  }
 }

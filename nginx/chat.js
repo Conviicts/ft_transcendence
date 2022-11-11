@@ -5,6 +5,12 @@ const channelName = document.getElementById('channelName');
 const messages = document.getElementById('messages');
 const channels = document.getElementById('channels');
 
+let userId = null;
+
+const joinChannel = () => {
+
+}
+
 const connect = () => {
   socket = io("http://localhost:3000/tchat", {
     withCredentials: true,
@@ -21,9 +27,11 @@ const connect = () => {
   })
 
   socket.on('userConnected', (data) => {
-    console.log(data);
+    userId = data[0];
+    console.log(userId);
   })
 }
+
 
 const disconnect = () => {
   socket.disconnect();

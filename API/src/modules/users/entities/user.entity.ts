@@ -6,12 +6,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { UserState } from '../interfaces/user-state.interface';
 import { JoinedChannel } from '../../tchat/entities/joined-channel.entity';
 import { Message } from '../../tchat/entities/message.entity';
 import { ConnectedUser } from '../../tchat/entities/connected-user.entity';
+import { PongGame } from 'src/modules/pong/entities/pong.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -52,6 +55,10 @@ export class User {
 
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
+
+  @ManyToMany(() => PongGame, (pong) => pong.users, { eager: true })
+  @JoinTable()
+  game_history: PongGame[];
 
   @CreateDateColumn()
   createdAt: Date;

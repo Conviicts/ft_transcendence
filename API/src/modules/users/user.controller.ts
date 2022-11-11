@@ -10,7 +10,9 @@ import {
   Res,
 } from '@nestjs/common';
 import {
+  ApiBody,
   ApiConflictResponse,
+  ApiConsumes,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -62,6 +64,36 @@ export class UserController {
   me(@Req() req): Promise<Partial<User>> {
     const user: User = req.user;
     return this.userService.currentUser(user);
+  }
+
+  @ApiOperation({ summary: 'Check if 2FA is activated' })
+  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @Get('/2fa')
+  getTwoFactorAuth(@Req() req): boolean {
+    const user: User = req.user;
+    return this.userService.get2FA(user);
+  }
+
+  @ApiOperation({ summary: 'Update Two Factor Auth' })
+  @ApiConsumes('application/json')
+  @ApiBody({
+    schema: {
+      properties: {
+        toggle: {
+          type: 'boolean',
+        },
+      },
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @Patch('/2fa')
+  updateTwoFactorAuth(
+    @Body('toggle') bool: boolean,
+    @Req() req,
+    @Res({ passthrough: true }) res,
+  ): Promise<void> {
+    const user: User = req.user;
+    return this.userService.update2FA(bool, user, res);
   }
 
   @ApiOperation({

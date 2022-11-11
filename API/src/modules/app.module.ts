@@ -25,7 +25,7 @@ import { PongModule } from './pong/pong.module';
     UserModule,
     AdminModule,
     TchatModule,
-    PongModule
+    PongModule,
   ],
   providers: [],
 })

@@ -64,7 +64,15 @@ export class UserRoleService {
     return newRole;
   }
 
-  async findUserByChannel(channel: IChannel, userId: string): Promise<IUserRole> {
-      return this.userRoleRepository.findOne({ where: { channel: channel as unknown as FindOptionsWhere<Channel>, userId: userId } });
+  async findUserByChannel(
+    channel: IChannel,
+    userId: string,
+  ): Promise<IUserRole> {
+    return this.userRoleRepository.findOne({
+      where: {
+        channel: channel as unknown as FindOptionsWhere<Channel>,
+        userId: userId,
+      },
+    });
   }
 }

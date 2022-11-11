@@ -8,6 +8,8 @@ services:
     ports:
       - "5432:5432"
       - "3000:3000" # temporary for testing tchat
+    volumes:
+      - ./upload/:/upload
     links:
       - database
     depends_on:

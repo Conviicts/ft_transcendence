@@ -17,12 +17,12 @@ import { provideCustomRepository } from '../users/custom-repository.util';
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([PongGame]),
     TchatModule,
-    UserModule
+    UserModule,
   ],
   providers: [
     provideCustomRepository(User, UserRepository),
     provideCustomRepository(PongGame, PongRepository),
-    PongService
+    PongService,
   ],
   controllers: [PongController],
   exports: [PongService],

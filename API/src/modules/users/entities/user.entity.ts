@@ -56,13 +56,13 @@ export class User {
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
-  @Column('int',  {default: 0})
+  @Column('int', { default: 0 })
   wins: number;
 
-  @Column('int',  {default: 0})
+  @Column('int', { default: 0 })
   looses: number;
 
-  @Column('int', {default: 0})
+  @Column('int', { default: 0 })
   games_count: number;
 
   @ManyToMany(() => PongGame, (pong) => pong.users, { eager: true })

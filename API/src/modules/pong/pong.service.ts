@@ -17,7 +17,7 @@ export class PongService {
 
   getAllMaps(): object {
     const fs = require('fs');
-    const files = fs.readdirSync('../upload/maps/');
+    const files = fs.readdirSync('/upload/maps/');
     return files;
   }
 

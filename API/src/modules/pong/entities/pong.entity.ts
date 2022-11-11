@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { User } from '../../users/entities/user.entity';
 
-@Entity()
+@Entity({ name: 'games' })
 export class PongGame {
   @PrimaryGeneratedColumn('uuid')
   gameId: string;
@@ -25,7 +25,7 @@ export class PongGame {
   @Column('text', { default: '' })
   looser: string;
 
-  @ManyToMany(() => User, (user) => user.game_history, { onDelete: 'CASCADE' })
+  @ManyToMany(() => User, (user) => user.games, { onDelete: 'CASCADE' })
   users: User[];
 
   @Column('text', { default: '' })

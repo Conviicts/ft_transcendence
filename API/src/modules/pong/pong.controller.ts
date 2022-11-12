@@ -1,6 +1,11 @@
-import { Controller, Get, UseGuards, Res } from '@nestjs/common';
+import { Controller, Get, UseGuards, Res, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiOkResponse,
+  ApiTags,
+  ApiParam,
+} from '@nestjs/swagger';
 
 import { PongService } from './pong.service';
 import { UserGuard } from '../users/guards/user.guard';
@@ -20,6 +25,14 @@ export class PongController {
     return res
       .set({ 'Cache-Control': ['public', 'max-age=604800', 'immutable'] })
       .json(this.pongService.getAllMaps());
+  }
+
+  @ApiOperation({ summary: 'Get map by name' })
+  @ApiParam({ name: 'name', required: true, description: 'name of the map' })
+  @Get('/maps/:name')
+  getMap(@Res() res, @Param('name') name): void {
+    res.set('Cache-Control', 'public, max-age=31557600');
+    this.pongService.getMap(res, name);
   }
 
   @ApiOperation({ summary: 'Get all pong games' })

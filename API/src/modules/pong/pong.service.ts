@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Observable, of } from 'rxjs';
 
 import { PongRepository } from './pong.repository';
 import { UserRepository } from '../users/user.repository';
@@ -19,6 +20,10 @@ export class PongService {
     const fs = require('fs');
     const files = fs.readdirSync('/upload/maps/');
     return files;
+  }
+
+  getMap(@Res() res, name: string): Observable<object> {
+    return of(res.sendFile('/upload/maps/' + name));
   }
 
   playerWin(winner: User, looser: User) {

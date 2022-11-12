@@ -69,7 +69,7 @@ export class UserController {
   @ApiOperation({ summary: 'Check if 2FA is activated' })
   @UseGuards(AuthGuard('jwt'), UserGuard)
   @Get('/2fa')
-  getTwoFactorAuth(@Req() req): boolean {
+  get2FA(@Req() req): boolean {
     const user: User = req.user;
     return this.userService.get2FA(user);
   }
@@ -87,7 +87,7 @@ export class UserController {
   })
   @UseGuards(AuthGuard('jwt'), UserGuard)
   @Patch('/2fa')
-  updateTwoFactorAuth(
+  update2FA(
     @Body('toggle') bool: boolean,
     @Req() req,
     @Res({ passthrough: true }) res,

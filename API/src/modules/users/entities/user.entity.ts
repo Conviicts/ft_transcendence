@@ -8,6 +8,7 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 
 import { UserState } from '../interfaces/user-state.interface';
@@ -15,6 +16,7 @@ import { JoinedChannel } from '../../tchat/entities/joined-channel.entity';
 import { Message } from '../../tchat/entities/message.entity';
 import { ConnectedUser } from '../../tchat/entities/connected-user.entity';
 import { PongGame } from 'src/modules/pong/entities/pong.entity';
+import { Avatar } from './avatar.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -32,8 +34,8 @@ export class User {
   @Column()
   password: string;
 
-  @Column('text', { default: '' })
-  profile_picture: string;
+  @OneToOne(() => Avatar, (avatar) => avatar.user)
+  profile_picture: Avatar;
 
   @Column('text', { default: '' })
   login42: string;

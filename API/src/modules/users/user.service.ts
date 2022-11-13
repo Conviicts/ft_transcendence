@@ -23,10 +23,13 @@ import {
 import { UserRepository } from './user.repository';
 import { JwtPayload } from './strategy/jwt.strategy';
 import { UserState } from './interfaces/user-state.interface';
+import { AvatarService } from './avatar.service';
 
 @Injectable()
 export class UserService {
   constructor(
+    private readonly avatarService: AvatarService,
+
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private jwtService: JwtService,
@@ -100,6 +103,20 @@ export class UserService {
       const accessToken: string = await this.jwtService.sign(payload);
       res.cookie('jwt', accessToken, { httpOnly: true });
     }
+  }
+
+  async setAvatar(userId: string, file: Express.Multer.File): Promise<void> {
+    if (!file)
+      throw new HttpException('File required', HttpStatus.NOT_ACCEPTABLE);
+
+    const filename = file.originalname;
+    const data = file.buffer;
+
+    const user: User = await this.getUser(userId);
+
+    await this.avatarService.createAvatar(filename, data, user);
+    if (user.profile_picture)
+      await this.avatarService.deleteAvatar(user.profile_picture.id);
   }
 
   async deleteUser(

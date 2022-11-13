@@ -10,10 +10,12 @@ import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 
 import { provideCustomRepository } from './custom-repository.util';
+import { Avatar } from './entities/avatar.entity';
+import { AvatarService } from './avatar.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Avatar]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.SECRET,
@@ -26,6 +28,7 @@ import { provideCustomRepository } from './custom-repository.util';
   providers: [
     provideCustomRepository(User, UserRepository),
     UserService,
+    AvatarService,
     JwtStrategy,
   ],
   exports: [JwtStrategy, PassportModule, UserService, JwtModule],

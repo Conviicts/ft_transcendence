@@ -14,13 +14,8 @@ export class AdminService {
   async getUsers(): Promise<Partial<User[]>> {
     const data = await this.userRepository
       .createQueryBuilder('user')
-      .select([
-        'user.userId',
-        'user.username',
-        'user.status',
-        'user.profile_picture',
-        'user.isAdmin',
-      ])
+      .select(['user.userId', 'user.username', 'user.status', 'user.isAdmin'])
+      .leftJoinAndSelect('user.profile_picture', 'avatar')
       .getMany();
     return data;
   }
@@ -29,12 +24,8 @@ export class AdminService {
     const data = await this.userRepository
       .createQueryBuilder('user')
       .andWhere('user.isAdmin = :isAdmin', { isAdmin: true })
-      .select([
-        'user.userId',
-        'user.username',
-        'user.status',
-        'user.profile_picture',
-      ])
+      .select(['user.userId', 'user.username', 'user.status', 'user.isAdmin'])
+      .leftJoinAndSelect('user.profile_picture', 'avatar')
       .getMany();
     return data;
   }

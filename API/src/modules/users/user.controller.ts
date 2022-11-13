@@ -6,8 +6,11 @@ import {
   Get,
   Req,
   Patch,
+  Put,
   Delete,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -24,6 +27,7 @@ import { UserGuard } from './guards/user.guard';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { NewUserDTO, LoginUserDTO, UpdateUserDTO } from './dto/user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('users')
 @Controller('api/user')
@@ -113,6 +117,23 @@ export class UserController {
   ): Promise<void> {
     const user: User = req.user;
     return this.userService.updateUser(updateUser, user, res);
+  }
+
+  @ApiOperation({
+    summary: 'Update user avatar',
+    description: 'Update avatar of current useer',
+  })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
+  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @Put('/avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  updateAvatar(
+    @Req() req,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<void> {
+    return this.userService.setAvatar(req.user.userId, file);
   }
 
   @ApiOperation({

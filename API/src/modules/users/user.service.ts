@@ -284,4 +284,12 @@ export class UserService {
     }
     return friends;
   }
+
+  updateRestrictedUsers(
+    toggle: boolean,
+    user: User,
+    target: User,
+  ): Promise<User> {
+    return this.userRepository.updateRestrictedUsers(toggle, user, target);
+  }
 }

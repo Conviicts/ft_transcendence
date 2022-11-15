@@ -101,4 +101,34 @@ export class UserRepository extends Repository<User> {
       throw new InternalServerErrorException();
     }
   }
+
+  async updateRestrictedUsers(
+    toggle: boolean,
+    user: User,
+    target: User,
+  ): Promise<User> {
+    const userFound = user.restricted.find(
+      (element) => element === target.userId,
+    );
+    if (toggle === true && !userFound) {
+      user.restricted.push(target.userId);
+      try {
+        await this.save(user);
+      } catch (error) {
+        console.log(error);
+        throw new InternalServerErrorException('add blocked user');
+      }
+    }
+    if (toggle === false && userFound) {
+      const index = user.restricted.indexOf(target.userId);
+      user.restricted.splice(index, 1);
+      try {
+        await this.save(user);
+      } catch (error) {
+        console.log(error);
+        throw new InternalServerErrorException('add blocked user');
+      }
+    }
+    return user;
+  }
 }

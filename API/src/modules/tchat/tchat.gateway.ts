@@ -217,16 +217,4 @@ export class TchatGateway
       }
     }
   }
-
-  @UseGuards(UserConnected)
-  @SubscribeMessage('restrictUser')
-  async onRestrictUser(client: Socket, data: any): Promise<User> {
-    const { user, toggle } = data;
-    const res = this.userService.updateRestrictedUsers(
-      toggle,
-      client.data.user,
-      user,
-    );
-    return res;
-  }
 }

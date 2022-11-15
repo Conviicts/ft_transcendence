@@ -101,34 +101,4 @@ export class UserRepository extends Repository<User> {
       throw new InternalServerErrorException();
     }
   }
-
-  async updateRestrictedUsers(
-    toggle: boolean,
-    user: User,
-    target: User,
-  ): Promise<User> {
-    const haveUser = user.restricted.find(
-      (element) => element === target.userId,
-    );
-    if (toggle === true && !haveUser) {
-      user.restricted.push(target.userId);
-      try {
-        await this.save(user);
-      } catch (error) {
-        console.log(error);
-        throw new InternalServerErrorException('add restricted user');
-      }
-    }
-    if (toggle === false && haveUser) {
-      const index = user.restricted.indexOf(target.userId);
-      user.restricted.splice(index, 1);
-      try {
-        await this.save(user);
-      } catch (error) {
-        console.log(error);
-        throw new InternalServerErrorException('add restricted user');
-      }
-    }
-    return user;
-  }
 }

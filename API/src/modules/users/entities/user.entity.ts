@@ -61,9 +61,6 @@ export class User {
   @Column('simple-array')
   friends: string[];
 
-  @Column('simple-array')
-  restricted: string[];
-
   @Column('int', { default: 0 })
   wins: number;
 

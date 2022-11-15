@@ -24,7 +24,7 @@ export class UserConnected implements CanActivate {
       where: { username },
     });
 
-    if (payload['auth'] === false && user.twoFactor === true) {
+    if (payload['auth'] === false && user.have2FA === true) {
       return false;
     }
     return true;

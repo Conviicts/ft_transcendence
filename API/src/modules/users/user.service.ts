@@ -24,6 +24,7 @@ import { UserRepository } from './user.repository';
 import { JwtPayload } from './strategy/jwt.strategy';
 import { UserState } from './interfaces/user-state.interface';
 import { AvatarService } from './avatar.service';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class UserService {
@@ -123,12 +124,21 @@ export class UserService {
     id: string,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
+    const query = await this.userRepository
+      .createQueryBuilder('user')
+      .getMany();
+
+    for (const user of query) {
+      if (user.friends.indexOf(id) > -1) {
+        this.userRepository.deleteFriend(id, user);
+      }
+    }
     res.clearCookie('jwt');
     await this.userRepository.delete(id);
   }
 
   get2FA(user: User): boolean {
-    return user.twoFactor;
+    return user.have2FA;
   }
 
   async updateStatus(status: UserState, userId: string): Promise<void> {
@@ -147,7 +157,7 @@ export class UserService {
   }
 
   async update2FA(twoFA: boolean, user: User, res: Response): Promise<void> {
-    user.twoFactor = twoFA;
+    user.have2FA = twoFA;
     const username = user.username;
     try {
       await this.userRepository.save(user);
@@ -175,6 +185,40 @@ export class UserService {
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     const { password, ...result } = user;
     return result;
+  }
+
+  async getUserById(id: string): Promise<User> {
+    let user = null;
+    if (id) user = await this.userRepository.findOne({ where: { userId: id } });
+
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    return user;
+  }
+
+  async getUserInfos(id: string): Promise<Partial<User>> {
+    let user: User = undefined;
+
+    user = await this.userRepository.findOne({ where: { userId: id } });
+    if (!user) return user;
+    return {
+      userId: user.userId,
+      username: user.username,
+      profile_picture: user.profile_picture,
+    };
+  }
+
+  async getUserBySocket(client: Socket): Promise<User> {
+    const authorization = client.handshake.headers.authorization;
+    const token = authorization && authorization.split(' ')[1];
+    if (!token) return null;
+
+    const payload = this.jwtService.verify(token);
+    if (!payload) return null;
+
+    const user = await this.getUserById(payload.sub).catch(() => null);
+    if (!user) return null;
+    return user;
   }
 
   async updateIsAdmin(
@@ -219,5 +263,25 @@ export class UserService {
     }
     const newUser: User = await this.create42User(userData);
     return newUser;
+  }
+
+  addFriend(friend: string, user: User): Promise<void> {
+    return this.userRepository.addFriend(friend, user);
+  }
+
+  deleteFriend(friend: string, user: User): Promise<void> {
+    return this.userRepository.deleteFriend(friend, user);
+  }
+
+  async getFriendsList(user: User): Promise<object> {
+    let i = 0;
+    const friends = [];
+    while (user.friends[i]) {
+      await this.getUserInfos(user.friends[i]).then(function (res) {
+        friends.push(res);
+        i++;
+      });
+    }
+    return friends;
   }
 }

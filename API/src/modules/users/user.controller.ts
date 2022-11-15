@@ -165,4 +165,58 @@ export class UserController {
     res.clearCookie('jwt');
     return { message: 'User is logged out' };
   }
+
+  @ApiOperation({ summary: 'Get friends' })
+  @ApiOkResponse({ description: 'get your friends list' })
+  /*******/
+  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @Get('/friends')
+  getFriendList(@Req() req): Promise<object> {
+    const user: User = req.user;
+    return this.userService.getFriendsList(user);
+  }
+
+  @ApiOperation({ summary: 'Add friend' })
+  @ApiOkResponse({ description: 'user added to your friends' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
+  @ApiConsumes('application/json')
+  @ApiBody({
+    schema: {
+      properties: {
+        userId: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @Post('/friends')
+  addFriend(@Body('userId') friend: string, @Req() req): Promise<void> {
+    const user: User = req.user;
+    return this.userService.addFriend(friend, user);
+  }
+
+  @ApiOperation({ summary: 'Delete friend' })
+  @ApiOkResponse({ description: 'user deleted from your friends' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
+  @ApiConsumes('application/json')
+  @ApiBody({
+    schema: {
+      properties: {
+        userId: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @Delete('/friends')
+  deleteFriend(@Body('userId') friend: string, @Req() req): Promise<void> {
+    const user: User = req.user;
+    return this.userService.deleteFriend(friend, user);
+  }
 }

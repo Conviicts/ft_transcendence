@@ -23,7 +23,7 @@ export class UserGuard implements CanActivate {
     const user: User = request.user;
 
     const decode = jwt_decode(request.cookies.jwt);
-    if (decode['auth'] === false && user.twoFactor === true) {
+    if (decode['auth'] === false && user.have2FA === true) {
       throw new ForbiddenException('need 2FA');
     }
     return true;

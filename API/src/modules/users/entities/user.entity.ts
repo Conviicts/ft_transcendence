@@ -41,7 +41,7 @@ export class User {
   login42: string;
 
   @Column('boolean', { default: false })
-  twoFactor: boolean;
+  have2FA: boolean;
 
   @Column('boolean', { default: false })
   isAdmin: boolean;
@@ -57,6 +57,9 @@ export class User {
 
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
+
+  @Column('simple-array')
+  friends: string[];
 
   @Column('int', { default: 0 })
   wins: number;

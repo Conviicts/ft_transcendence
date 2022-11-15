@@ -3,7 +3,9 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import {
   ConflictException,
+  HttpStatus,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 import { User } from './entities/user.entity';
@@ -15,7 +17,7 @@ export class UserRepository extends Repository<User> {
 
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
-
+    user.friends = [];
     const firstUser = await this.createQueryBuilder('user')
       .getCount()
       .catch(() => 0);
@@ -37,6 +39,7 @@ export class UserRepository extends Repository<User> {
     const user: User = this.create(userData);
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
+    user.friends = [];
     user.login42 = userData.login42;
     const firstUser = await this.createQueryBuilder('user')
       .getCount()
@@ -60,6 +63,41 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException(
           'Username or email already taken',
         );
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async addFriend(friend: string, user: User): Promise<void> {
+    const found = user.friends.find((element) => element === friend);
+    if (found != undefined) {
+      throw new UnauthorizedException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'this user is already your friend',
+      });
+    }
+    user.friends.push(friend);
+    try {
+      await this.save(user);
+    } catch (e) {
+      console.log(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async deleteFriend(friend: string, user: User): Promise<void> {
+    const index = user.friends.indexOf(friend);
+    if (index !== -1) {
+      user.friends.splice(index, 1);
+    } else {
+      throw new UnauthorizedException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'this user is not your friend',
+      });
+    }
+    try {
+      await this.save(user);
+    } catch (e) {
+      console.log(e);
       throw new InternalServerErrorException();
     }
   }

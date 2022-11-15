@@ -26,7 +26,7 @@ export class ConnectedUserService {
 
   async findUser(user: User): Promise<IUserConnected> {
     return this.connectedUserRepository.findOne({
-      where: { user: user as FindOptionsWhere<User> },
+      where: { user: user as unknown },
     });
   }
 

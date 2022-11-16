@@ -136,24 +136,6 @@ export class UserController {
     return this.userService.setAvatar(req.user.uid, file);
   }
 
-  @ApiOperation({
-    summary: 'delete user account',
-    description: 'delete an user',
-  })
-  @ApiOkResponse({ description: 'Confirms that your account has been deleted' })
-  @ApiUnauthorizedResponse({
-    description: "You don't have access to this",
-  })
-  @UseGuards(AuthGuard('jwt'), UserGuard)
-  @Delete('/')
-  deleteUser(
-    @Req() req,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<void> {
-    const user_id = req.user.uid;
-    return this.userService.deleteUser(user_id, res);
-  }
-
   @ApiOperation({ summary: 'Logs you out' })
   @ApiOkResponse({ description: 'Confirms that you have logged out' })
   @ApiUnauthorizedResponse({

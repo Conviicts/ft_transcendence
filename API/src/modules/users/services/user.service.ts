@@ -122,23 +122,6 @@ export class UserService {
     if (user.avatar) await this.avatarService.deleteAvatar(user.avatar.id);
   }
 
-  async deleteUser(
-    id: string,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<void> {
-    const query = await this.userRepository
-      .createQueryBuilder('user')
-      .getMany();
-
-    for (const user of query) {
-      if (user.friends.indexOf(id) > -1) {
-        this.friendsRepository.deleteFriend(id, user);
-      }
-    }
-    res.clearCookie('jwt');
-    await this.userRepository.delete(id);
-  }
-
   get2FA(user: User): boolean {
     return user.have2FA;
   }

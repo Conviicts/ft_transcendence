@@ -18,6 +18,7 @@ export class UserRepository extends Repository<User> {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     user.friends = [];
+    user.restricted = [];
     const firstUser = await this.createQueryBuilder('user')
       .getCount()
       .catch(() => 0);
@@ -40,6 +41,7 @@ export class UserRepository extends Repository<User> {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     user.friends = [];
+    user.restricted = [];
     user.login42 = userData.login42;
     const firstUser = await this.createQueryBuilder('user')
       .getCount()

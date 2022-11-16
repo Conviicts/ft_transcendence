@@ -6,7 +6,6 @@ import {
   Get,
   Req,
   Patch,
-  Put,
   Delete,
   Res,
   UploadedFile,
@@ -128,7 +127,7 @@ export class UserController {
     description: "You don't have access to this",
   })
   @UseGuards(AuthGuard('jwt'), UserGuard)
-  @Put('/avatar')
+  @Patch('/avatar')
   @UseInterceptors(FileInterceptor('file'))
   updateAvatar(
     @Req() req,

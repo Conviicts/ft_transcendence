@@ -116,8 +116,8 @@ export class UserService {
     const user: User = await this.getUser(userId);
 
     await this.avatarService.createAvatar(filename, data, user);
-    if (user.profile_picture)
-      await this.avatarService.deleteAvatar(user.profile_picture.id);
+    if (user.avatar)
+      await this.avatarService.deleteAvatar(user.avatar.id);
   }
 
   async deleteUser(
@@ -204,7 +204,7 @@ export class UserService {
     return {
       userId: user.userId,
       username: user.username,
-      profile_picture: user.profile_picture,
+      avatar: user.avatar,
     };
   }
 

@@ -142,7 +142,7 @@ export class UserController {
     description: "You don't have access to this",
   })
   @UseGuards(AuthGuard('jwt'))
-  @Get('/logout')
+  @Delete('/')
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('jwt');
     return { message: 'User is logged out' };

@@ -15,7 +15,7 @@ export class AdminService {
     const data = await this.userRepository
       .createQueryBuilder('user')
       .select(['user.uid', 'user.username', 'user.status', 'user.isAdmin'])
-      .leftJoinAndSelect('user.profile_picture', 'avatar')
+      .leftJoinAndSelect('user.avatar', 'avatar')
       .getMany();
     return data;
   }
@@ -25,7 +25,7 @@ export class AdminService {
       .createQueryBuilder('user')
       .andWhere('user.isAdmin = :isAdmin', { isAdmin: true })
       .select(['user.uid', 'user.username', 'user.status', 'user.isAdmin'])
-      .leftJoinAndSelect('user.profile_picture', 'avatar')
+      .leftJoinAndSelect('user.avatar', 'avatar')
       .getMany();
     return data;
   }

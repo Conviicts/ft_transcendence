@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Controller,
   Post,
@@ -10,6 +11,8 @@ import {
   Res,
   UploadedFile,
   UseInterceptors,
+  Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -37,8 +40,8 @@ export class UserController {
   @ApiOperation({ description: 'User sign-up' })
   @ApiOkResponse({ description: 'Provide you an access token' })
   @ApiConflictResponse({ description: 'Username or email already exist' })
-  @Post('/register')
-  async register(
+  @Post('/signup')
+  async signUp(
     @Body() userData: NewUserDTO,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
@@ -50,12 +53,38 @@ export class UserController {
   @ApiUnauthorizedResponse({
     description: "You don't have access to this",
   })
-  @Post('/login')
+  @Post('/signin')
   async signIn(
     @Body() userData: LoginUserDTO,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     return this.userService.login(userData, res);
+  }
+
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiOkResponse({ description: 'Provide you list of all users' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/')
+  async getAllUsers(): Promise<Partial<User[]>> {
+    const users = await this.userService.getAllUsers();
+    const userRet = [];
+    users.forEach((user) => {
+      const { password, ...newUser } = user;
+      userRet.push(newUser);
+    });
+    return userRet;
+  }
+
+  @Get('/:id')
+  async getUser(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Partial<User>> {
+    const user = await this.userService.getUserById(id);
+    const { password, ...newUser } = user;
+    return newUser;
   }
 
   @ApiOperation({ summary: 'Get all info of current user' })
@@ -64,7 +93,7 @@ export class UserController {
     description: "You don't have access to this",
   })
   @UseGuards(AuthGuard('jwt'), UserGuard)
-  @Get('/')
+  @Get('/me')
   me(@Req() req): Promise<Partial<User>> {
     const user: User = req.user;
     return this.userService.currentUser(user);

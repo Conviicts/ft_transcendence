@@ -79,6 +79,10 @@ export class UserService {
     }
   }
 
+  getAllUsers(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
   async currentUser(user: User): Promise<Partial<User>> {
     let userFound: User = undefined;
     userFound = await this.userRepository.findOne({
@@ -172,7 +176,7 @@ export class UserService {
     return result;
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getUserById(id: string): Promise<Partial<User>> {
     let user = null;
     if (id) user = await this.userRepository.findOne({ where: { uid: id } });
 

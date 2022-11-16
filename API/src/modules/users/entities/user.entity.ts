@@ -35,7 +35,7 @@ export class User {
   password: string;
 
   @OneToOne(() => Avatar, (avatar) => avatar.user)
-  profile_picture: Avatar;
+  avatar: Avatar;
 
   @Column('text', { default: '' })
   login42: string;

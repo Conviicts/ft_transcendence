@@ -12,7 +12,7 @@ import { Channel } from './channel.entity';
 @Entity({ name: 'joined_channels' })
 export class JoinedChannel {
   @PrimaryGeneratedColumn('uuid')
-  joinId: string;
+  id: string;
 
   @Column('text')
   socketId: string;

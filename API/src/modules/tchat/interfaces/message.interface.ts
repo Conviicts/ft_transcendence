@@ -2,7 +2,7 @@ import { User } from '../../users/entities/user.entity';
 import { IChannel } from './channel.interface';
 
 export interface IMessage {
-  msgId: string;
+  id: string;
   content: string;
   user: User;
   channel: IChannel;

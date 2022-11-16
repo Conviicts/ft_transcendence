@@ -1,15 +1,12 @@
 import * as bcrypt from 'bcrypt';
-
 import { Repository } from 'typeorm';
 import {
   ConflictException,
-  HttpStatus,
   InternalServerErrorException,
-  UnauthorizedException,
 } from '@nestjs/common';
 
-import { User } from './entities/user.entity';
-import { NewUserDTO, UpdateUserDTO, User42DTO } from './dto/user.dto';
+import { User } from '../entities/user.entity';
+import { NewUserDTO, UpdateUserDTO, User42DTO } from '../dto/user.dto';
 
 export class UserRepository extends Repository<User> {
   async createUser(userData: NewUserDTO): Promise<User> {
@@ -67,70 +64,5 @@ export class UserRepository extends Repository<User> {
         );
       throw new InternalServerErrorException();
     }
-  }
-
-  async addFriend(friend: string, user: User): Promise<void> {
-    const found = user.friends.find((element) => element === friend);
-    if (found != undefined) {
-      throw new UnauthorizedException({
-        status: HttpStatus.FORBIDDEN,
-        error: 'this user is already your friend',
-      });
-    }
-    user.friends.push(friend);
-    try {
-      await this.save(user);
-    } catch (e) {
-      console.log(e);
-      throw new InternalServerErrorException();
-    }
-  }
-
-  async deleteFriend(friend: string, user: User): Promise<void> {
-    const index = user.friends.indexOf(friend);
-    if (index !== -1) {
-      user.friends.splice(index, 1);
-    } else {
-      throw new UnauthorizedException({
-        status: HttpStatus.FORBIDDEN,
-        error: 'this user is not your friend',
-      });
-    }
-    try {
-      await this.save(user);
-    } catch (e) {
-      console.log(e);
-      throw new InternalServerErrorException();
-    }
-  }
-
-  async updateRestrictedUsers(
-    toggle: boolean,
-    user: User,
-    target: User,
-  ): Promise<User> {
-    const userFound = user.restricted.find(
-      (element) => element === target.userId,
-    );
-    if (toggle === true && !userFound) {
-      user.restricted.push(target.userId);
-      try {
-        await this.save(user);
-      } catch (error) {
-        console.log(error);
-        throw new InternalServerErrorException('add blocked user');
-      }
-    }
-    if (toggle === false && userFound) {
-      const index = user.restricted.indexOf(target.userId);
-      user.restricted.splice(index, 1);
-      try {
-        await this.save(user);
-      } catch (error) {
-        console.log(error);
-        throw new InternalServerErrorException('add blocked user');
-      }
-    }
-    return user;
   }
 }

@@ -11,7 +11,7 @@ import { User } from '../../users/entities/user.entity';
 @Entity()
 export class ConnectedUser {
   @PrimaryGeneratedColumn('uuid')
-  connectedUserId: string;
+  uid: string;
 
   @Column('text')
   socketId: string;

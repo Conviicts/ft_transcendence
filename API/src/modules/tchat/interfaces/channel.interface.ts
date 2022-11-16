@@ -1,7 +1,7 @@
 import { User } from '../../users/entities/user.entity';
 
 export interface IChannel {
-  channelId: string;
+  id: string;
   isDM: boolean;
   name: string;
   users: User[];
@@ -14,7 +14,7 @@ export interface IChannel {
 }
 
 export interface IJoinedChannel {
-  joinId?: string;
+  id?: string;
   socketId: string;
   user: User;
   channel: IChannel;

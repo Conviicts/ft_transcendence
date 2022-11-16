@@ -21,7 +21,7 @@ import { Avatar } from './avatar.entity';
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  userId: string;
+  uid: string;
 
   @IsAlphanumeric()
   @Column({ unique: true })

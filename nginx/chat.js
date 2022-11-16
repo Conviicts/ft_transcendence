@@ -5,7 +5,7 @@ const channelName = document.getElementById('channelName');
 const messages = document.getElementById('messages');
 const channels = document.getElementById('channels');
 
-let userId = null;
+let uid = null;
 
 const joinChannel = () => {
 
@@ -21,14 +21,14 @@ const connect = () => {
 
   socket.on('channel', (data) => {
     channels.innerHTML = '';
-    data.forEach(element => {
-      handleChannel(element.name);
+    data.forEach(x => {
+      handleChannel(x.name);
     });
   })
 
   socket.on('userConnected', (data) => {
-    userId = data[0];
-    console.log(userId);
+    uid = data[0];
+    console.log(uid);
   })
 }
 

@@ -22,14 +22,15 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
-import { UserGuard } from './guards/user.guard';
-import { UserService } from './services/user.service';
-import { User } from './entities/user.entity';
-import { NewUserDTO, LoginUserDTO, UpdateUserDTO } from './dto/user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 
-@ApiTags('users')
+import { UserGuard } from '../guards/user.guard';
+import { UserService } from '../services/user.service';
+import { User } from '../entities/user.entity';
+import { NewUserDTO, LoginUserDTO, UpdateUserDTO } from '../dto/user.dto';
+
+@ApiTags('Users')
 @Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -133,7 +134,7 @@ export class UserController {
     @Req() req,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<void> {
-    return this.userService.setAvatar(req.user.userId, file);
+    return this.userService.setAvatar(req.user.uid, file);
   }
 
   @ApiOperation({
@@ -150,7 +151,7 @@ export class UserController {
     @Req() req,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
-    const user_id = req.user.userId;
+    const user_id = req.user.uid;
     return this.userService.deleteUser(user_id, res);
   }
 
@@ -164,59 +165,5 @@ export class UserController {
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('jwt');
     return { message: 'User is logged out' };
-  }
-
-  @ApiOperation({ summary: 'Get friends' })
-  @ApiOkResponse({ description: 'get your friends list' })
-  /*******/
-  @UseGuards(AuthGuard('jwt'), UserGuard)
-  @Get('/friends')
-  getFriendList(@Req() req): Promise<object> {
-    const user: User = req.user;
-    return this.userService.getFriendsList(user);
-  }
-
-  @ApiOperation({ summary: 'Add friend' })
-  @ApiOkResponse({ description: 'user added to your friends' })
-  @ApiUnauthorizedResponse({
-    description: "You don't have access to this",
-  })
-  @ApiConsumes('application/json')
-  @ApiBody({
-    schema: {
-      properties: {
-        userId: {
-          type: 'string',
-        },
-      },
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), UserGuard)
-  @Post('/friends')
-  addFriend(@Body('userId') friend: string, @Req() req): Promise<void> {
-    const user: User = req.user;
-    return this.userService.addFriend(friend, user);
-  }
-
-  @ApiOperation({ summary: 'Delete friend' })
-  @ApiOkResponse({ description: 'user deleted from your friends' })
-  @ApiUnauthorizedResponse({
-    description: "You don't have access to this",
-  })
-  @ApiConsumes('application/json')
-  @ApiBody({
-    schema: {
-      properties: {
-        userId: {
-          type: 'string',
-        },
-      },
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), UserGuard)
-  @Delete('/friends')
-  deleteFriend(@Body('userId') friend: string, @Req() req): Promise<void> {
-    const user: User = req.user;
-    return this.userService.deleteFriend(friend, user);
   }
 }

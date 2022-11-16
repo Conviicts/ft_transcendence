@@ -7,7 +7,7 @@ import { AdminGuard } from '../users/guards/admin.guard';
 import { UserGuard } from '../users/guards/user.guard';
 import { AdminService } from './admin.service';
 
-@ApiTags('admin')
+@ApiTags('Admin')
 @Controller('api/admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}

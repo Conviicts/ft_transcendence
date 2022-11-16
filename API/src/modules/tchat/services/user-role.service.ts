@@ -33,7 +33,7 @@ export class UserRoleService {
       mute = null;
     }
     const newRole: IUserRole = await this.userRoleRepository.save({
-      userId: user.userId,
+      uid: user.uid,
       ban,
       mute,
       channel,
@@ -64,14 +64,11 @@ export class UserRoleService {
     return newRole;
   }
 
-  async findUserByChannel(
-    channel: IChannel,
-    userId: string,
-  ): Promise<IUserRole> {
+  async findUserByChannel(channel: IChannel, uid: string): Promise<IUserRole> {
     return this.userRoleRepository.findOne({
       where: {
         channel: channel as unknown as FindOptionsWhere<Channel>,
-        userId: userId,
+        uid: uid,
       },
     });
   }

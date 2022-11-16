@@ -5,13 +5,16 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { User } from './entities/user.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import { UserController } from './user.controller';
-import { UserRepository } from './user.repository';
+import { UserController } from './controllers/user.controller';
+import { FriendsController } from './controllers/friends.controller';
+import { UserRepository } from './repositories/user.repository';
+import { FriendsRepository } from './repositories/friends.repository';
 import { UserService } from './services/user.service';
-
-import { provideCustomRepository } from '../../custom-repository.util';
 import { Avatar } from './entities/avatar.entity';
 import { AvatarService } from './services/avatar.service';
+import { FriendsService } from './services/friends.service';
+
+import { provideCustomRepository } from '../../custom-repository.util';
 
 @Module({
   imports: [
@@ -24,11 +27,13 @@ import { AvatarService } from './services/avatar.service';
       },
     }),
   ],
-  controllers: [UserController],
+  controllers: [UserController, FriendsController],
   providers: [
     provideCustomRepository(User, UserRepository),
+    provideCustomRepository(User, FriendsRepository),
     UserService,
     AvatarService,
+    FriendsService,
     JwtStrategy,
   ],
   exports: [JwtStrategy, PassportModule, UserService, JwtModule],

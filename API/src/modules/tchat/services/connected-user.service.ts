@@ -43,7 +43,7 @@ export class ConnectedUserService {
     });
     const userConnected = [];
     for (const field of query) {
-      userConnected.push(field.user.userId);
+      userConnected.push(field.user.uid);
     }
     return userConnected;
   }

@@ -10,10 +10,10 @@ import { Channel } from '../../tchat/entities/channel.entity';
 @Entity({ name: 'users_role' })
 export class UserRole {
   @PrimaryGeneratedColumn('uuid')
-  roleUserId: string;
+  id: string;
 
   @Column('text')
-  userId: string;
+  uid: string;
 
   @Column({ nullable: true, type: 'timestamptz' })
   ban: Date;

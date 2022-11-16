@@ -10,7 +10,7 @@ import { parse } from 'cookie';
 
 import { User } from '../../users/entities/user.entity';
 import { IChannel } from '../interfaces/channel.interface';
-import { UserRepository } from '../../users/user.repository';
+import { UserRepository } from '../../users/repositories/user.repository';
 import { Channel } from '../entities/channel.entity';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class ChannelService {
     if (chanName) return null;
     if (/^([a-zA-Z0-9-]+)$/.test(name) === false) return null;
     channel.admins = [];
-    channel.owner = creator.userId;
+    channel.owner = creator.uid;
     if (!password) password = null;
     if (isPublic === false) {
       channel.users.push(creator);
@@ -49,7 +49,7 @@ export class ChannelService {
 
   async deleteChannel(channel: IChannel) {
     const haveChannel: Channel = await this.channelRepository.findOne({
-      where: { channelId: channel.channelId },
+      where: { id: channel.id },
     });
     if (haveChannel) {
       try {
@@ -60,7 +60,7 @@ export class ChannelService {
           console.log(error);
           throw new InternalServerErrorException('empty user on channel');
         }
-        await this.channelRepository.delete(haveChannel.channelId);
+        await this.channelRepository.delete(haveChannel.id);
       } catch (error) {
         console.log(error);
         throw new InternalServerErrorException('delete channel');
@@ -75,11 +75,11 @@ export class ChannelService {
     return false;
   }
 
-  async getChannel(channelId: string): Promise<IChannel> {
-    return this.channelRepository.findOne({ where: { channelId } });
+  async getChannel(id: string): Promise<IChannel> {
+    return this.channelRepository.findOne({ where: { id } });
   }
 
-  async getUserChannels(userId: string): Promise<IChannel[]> {
+  async getUserChannels(uid: string): Promise<IChannel[]> {
     let query = this.channelRepository
       .createQueryBuilder('channels')
       .where('channels.isPublic = true');
@@ -88,7 +88,7 @@ export class ChannelService {
     query = this.channelRepository
       .createQueryBuilder('channels')
       .leftJoin('channels.users', 'users')
-      .where('users.userId = :userId', { userId })
+      .where('users.uid = :uid', { uid })
       .andWhere('channels.isPublic = false')
       .leftJoinAndSelect('channels.users', 'all_users')
       .leftJoinAndSelect('channels.userRole', 'all_roles')
@@ -126,17 +126,17 @@ export class ChannelService {
     } else {
       this.updateAdmins(false, channel, user);
       if (channel.isPublic === false) this.updateUsers(channel, user);
-      if (channel.owner === user.userId) {
-        const found = channel.users.find((x) => x.userId !== user.userId);
+      if (channel.owner === user.uid) {
+        const found = channel.users.find((x) => x.uid !== user.uid);
         if (found) {
-          channel.owner = found.userId;
+          channel.owner = found.uid;
           channel.users.push(found);
         } else {
           await this.deleteChannel(channel);
           return;
         }
       }
-      channel.users = channel.users.filter((x) => x.userId !== user.userId);
+      channel.users = channel.users.filter((x) => x.uid !== user.uid);
       try {
         await this.channelRepository.save(channel);
       } catch (error) {
@@ -151,9 +151,7 @@ export class ChannelService {
     if (members) {
       const newUsers = [];
       for (const user of members) {
-        const userFound: User = channel.users.find(
-          (x) => x.userId === user.userId,
-        );
+        const userFound: User = channel.users.find((x) => x.uid === user.uid);
         if (!userFound) newUsers.push(user);
       }
       const newMembers = channel.users.concat(newUsers);
@@ -192,9 +190,9 @@ export class ChannelService {
   }
 
   async updateAdmins(admin: boolean, channel: IChannel, user: User) {
-    const found = channel.admins.find((x) => x === user.userId);
+    const found = channel.admins.find((x) => x === user.uid);
     if (admin === true && !found) {
-      channel.admins.push(user.userId);
+      channel.admins.push(user.uid);
       try {
         await this.channelRepository.save(channel);
       } catch (error) {
@@ -203,7 +201,7 @@ export class ChannelService {
       }
     }
     if (admin === false && found) {
-      const index = channel.admins.indexOf(user.userId);
+      const index = channel.admins.indexOf(user.uid);
       channel.admins.splice(index, 1);
       try {
         await this.channelRepository.save(channel);

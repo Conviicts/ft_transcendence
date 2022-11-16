@@ -20,7 +20,8 @@ import {
   LoginUserDTO,
   User42DTO,
 } from '../dto/user.dto';
-import { UserRepository } from '../user.repository';
+import { UserRepository } from '../repositories/user.repository';
+import { FriendsRepository } from '../repositories/friends.repository';
 import { JwtPayload } from '../strategy/jwt.strategy';
 import { UserState } from '../interfaces/user-state.interface';
 import { AvatarService } from '../services/avatar.service';
@@ -33,6 +34,8 @@ export class UserService {
 
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
+    @InjectRepository(FriendsRepository)
+    private friendsRepository: FriendsRepository,
     private jwtService: JwtService,
   ) {}
 
@@ -79,7 +82,7 @@ export class UserService {
   async currentUser(user: User): Promise<Partial<User>> {
     let userFound: User = undefined;
     userFound = await this.userRepository.findOne({
-      where: { userId: user.userId },
+      where: { uid: user.uid },
     });
     if (!userFound) throw new NotFoundException('No user found');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -106,18 +109,17 @@ export class UserService {
     }
   }
 
-  async setAvatar(userId: string, file: Express.Multer.File): Promise<void> {
+  async setAvatar(uid: string, file: Express.Multer.File): Promise<void> {
     if (!file)
       throw new HttpException('File required', HttpStatus.NOT_ACCEPTABLE);
 
     const filename = file.originalname;
     const data = file.buffer;
 
-    const user: User = await this.getUser(userId);
+    const user: User = await this.getUser(uid);
 
     await this.avatarService.createAvatar(filename, data, user);
-    if (user.avatar)
-      await this.avatarService.deleteAvatar(user.avatar.id);
+    if (user.avatar) await this.avatarService.deleteAvatar(user.avatar.id);
   }
 
   async deleteUser(
@@ -130,7 +132,7 @@ export class UserService {
 
     for (const user of query) {
       if (user.friends.indexOf(id) > -1) {
-        this.userRepository.deleteFriend(id, user);
+        this.friendsRepository.deleteFriend(id, user);
       }
     }
     res.clearCookie('jwt');
@@ -141,10 +143,10 @@ export class UserService {
     return user.have2FA;
   }
 
-  async updateStatus(status: UserState, userId: string): Promise<void> {
+  async updateStatus(status: UserState, uid: string): Promise<void> {
     let res: User = undefined;
 
-    res = await this.userRepository.findOne({ where: { userId } });
+    res = await this.userRepository.findOne({ where: { uid } });
     if (!res) throw new NotFoundException('No user found');
 
     res.status = status;
@@ -171,17 +173,17 @@ export class UserService {
     }
   }
 
-  async getIsAdmin(userId: string): Promise<boolean> {
+  async getIsAdmin(uid: string): Promise<boolean> {
     let user: User = undefined;
 
-    user = await this.userRepository.findOne({ where: { userId: userId } });
+    user = await this.userRepository.findOne({ where: { uid: uid } });
     if (!user) throw new NotFoundException('No user found');
     return user.isAdmin;
   }
 
-  async getUser(userId: string): Promise<User> {
+  async getUser(uid: string): Promise<User> {
     let user = null;
-    if (userId) user = await this.userRepository.findOne({ where: { userId } });
+    if (uid) user = await this.userRepository.findOne({ where: { uid } });
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     const { password, ...result } = user;
     return result;
@@ -189,7 +191,7 @@ export class UserService {
 
   async getUserById(id: string): Promise<User> {
     let user = null;
-    if (id) user = await this.userRepository.findOne({ where: { userId: id } });
+    if (id) user = await this.userRepository.findOne({ where: { uid: id } });
 
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
@@ -199,10 +201,10 @@ export class UserService {
   async getUserInfos(id: string): Promise<Partial<User>> {
     let user: User = undefined;
 
-    user = await this.userRepository.findOne({ where: { userId: id } });
+    user = await this.userRepository.findOne({ where: { uid: id } });
     if (!user) return user;
     return {
-      userId: user.userId,
+      uid: user.uid,
       username: user.username,
       avatar: user.avatar,
     };
@@ -223,16 +225,16 @@ export class UserService {
 
   async updateIsAdmin(
     bool: boolean,
-    userId: string,
+    uid: string,
     userIsAdmin: User,
   ): Promise<void> {
     let user: User = undefined;
 
-    if (userIsAdmin.userId === userId) {
+    if (userIsAdmin.uid === uid) {
       throw new UnauthorizedException('Cannot change your own admin state');
     }
 
-    user = await this.userRepository.findOne({ where: { userId: userId } });
+    user = await this.userRepository.findOne({ where: { uid: uid } });
     if (!user) throw new NotFoundException('No user found');
 
     user.isAdmin = bool;
@@ -263,33 +265,5 @@ export class UserService {
     }
     const newUser: User = await this.create42User(userData);
     return newUser;
-  }
-
-  addFriend(friend: string, user: User): Promise<void> {
-    return this.userRepository.addFriend(friend, user);
-  }
-
-  deleteFriend(friend: string, user: User): Promise<void> {
-    return this.userRepository.deleteFriend(friend, user);
-  }
-
-  async getFriendsList(user: User): Promise<object> {
-    let i = 0;
-    const friends = [];
-    while (user.friends[i]) {
-      await this.getUserInfos(user.friends[i]).then(function (res) {
-        friends.push(res);
-        i++;
-      });
-    }
-    return friends;
-  }
-
-  updateRestrictedUsers(
-    toggle: boolean,
-    user: User,
-    target: User,
-  ): Promise<User> {
-    return this.userRepository.updateRestrictedUsers(toggle, user, target);
   }
 }

@@ -17,7 +17,7 @@ import { Message } from './message.entity';
 @Entity({ name: 'channels' })
 export class Channel {
   @PrimaryGeneratedColumn('uuid')
-  channelId: string;
+  id: string;
 
   @Column('boolean', { default: false })
   isDM: boolean;

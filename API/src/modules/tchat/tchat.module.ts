@@ -5,7 +5,7 @@ import { UserModule } from '../users/user.module';
 import { ChannelService } from './services/channel.service';
 import { Channel } from './entities/channel.entity';
 import { User } from '../users/entities/user.entity';
-import { UserRepository } from '../users/user.repository';
+import { UserRepository } from '../users/repositories/user.repository';
 import { ConnectedUser } from './entities/connected-user.entity';
 import { ConnectedUserService } from './services/connected-user.service';
 import { Message } from './entities/message.entity';
@@ -17,6 +17,8 @@ import { UserRoleService } from './services/user-role.service';
 import { TchatGateway } from './tchat.gateway';
 
 import { provideCustomRepository } from '../../custom-repository.util';
+import { FriendsRepository } from '../users/repositories/friends.repository';
+import { FriendsService } from '../users/services/friends.service';
 
 @Module({
   imports: [
@@ -32,11 +34,13 @@ import { provideCustomRepository } from '../../custom-repository.util';
   providers: [
     TchatGateway,
     provideCustomRepository(User, UserRepository),
+    provideCustomRepository(User, FriendsRepository),
     ChannelService,
     ConnectedUserService,
     MessageService,
     JoinedChannelService,
     UserRoleService,
+    FriendsService,
   ],
   exports: [TchatGateway],
 })

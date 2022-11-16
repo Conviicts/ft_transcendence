@@ -4,7 +4,7 @@ import { parse } from 'cookie';
 
 import { User } from '../../users/entities/user.entity';
 import { JwtPayload } from '../../users/strategy/jwt.strategy';
-import { UserRepository } from '../../users/user.repository';
+import { UserRepository } from '../../users/repositories/user.repository';
 
 @Injectable()
 export class UserConnected implements CanActivate {

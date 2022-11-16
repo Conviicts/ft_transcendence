@@ -19,7 +19,7 @@ import { UserConnected } from './guards/user-connected.guard';
 import { IChannel, IJoinedChannel } from './interfaces/channel.interface';
 import { IUserConnected } from '../users/interfaces/user.interface';
 
-import { UserService } from '../users/services/user.service';
+import { FriendsService } from '../users/services/friends.service';
 import { IMessage } from './interfaces/message.interface';
 
 @WebSocketGateway({
@@ -30,7 +30,7 @@ export class TchatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
 {
   constructor(
-    private readonly userService: UserService,
+    private readonly friendsService: FriendsService,
     private readonly channelService: ChannelService,
     private readonly connectedUserService: ConnectedUserService,
     private readonly messageService: MessageService,
@@ -48,8 +48,8 @@ export class TchatGateway
   }
 
   async userStatus() {
-    const userID = await this.connectedUserService.userStatus();
-    return this.server.emit('userConnected', userID);
+    const uid = await this.connectedUserService.userStatus();
+    return this.server.emit('userConnected', uid);
   }
 
   async handleConnection(client: Socket) {
@@ -81,7 +81,7 @@ export class TchatGateway
       await this.connectedUserService.findAll();
     for (const connection of connections) {
       const channels: IChannel[] = await this.channelService.getUserChannels(
-        connection.user.userId,
+        connection.user.uid,
       );
       await this.server.to(connection.socketId).emit('channel', channels);
     }
@@ -108,7 +108,7 @@ export class TchatGateway
   async onChatPage(client: Socket): Promise<IChannel[]> {
     const user: User = await this.channelService.getUser(client);
     const channels: IChannel[] = await this.channelService.getUserChannels(
-      user.userId,
+      user.uid,
     );
     return channels;
   }
@@ -132,9 +132,7 @@ export class TchatGateway
   @SubscribeMessage('updateChannel')
   async onUpdateChannel(client: Socket, info: any): Promise<boolean> {
     const { channel } = info;
-    const channelFound = await this.channelService.getChannel(
-      channel.channelId,
-    );
+    const channelFound = await this.channelService.getChannel(channel.id);
 
     const ret: Boolean = await this.channelService.updateChannel(
       channelFound,
@@ -150,9 +148,7 @@ export class TchatGateway
   @UseGuards(UserConnected)
   @SubscribeMessage('joinChannel')
   async handleJoinChannel(client: Socket, channel: IChannel) {
-    const channelFound = await this.channelService.getChannel(
-      channel.channelId,
-    );
+    const channelFound = await this.channelService.getChannel(channel.id);
     if (
       channelFound.isPublic === false &&
       (await this.channelService.isPrivateChannel(
@@ -184,7 +180,7 @@ export class TchatGateway
   async onAddMessage(client: Socket, message: IMessage) {
     const userFound = await this.userRoleService.findUserByChannel(
       message.channel,
-      client.data.user.userId,
+      client.data.user.uid,
     );
     const date = new Date();
     if (userFound && (userFound.mute >= date || userFound.ban >= date)) return;
@@ -193,7 +189,7 @@ export class TchatGateway
       user: client.data.user,
     });
     const channel: IChannel = await this.channelService.getChannel(
-      newMessage.channel.channelId,
+      newMessage.channel.id,
     );
     const joinedUsers: IJoinedChannel[] =
       await this.joinedChannelService.findByChannel(channel);
@@ -204,7 +200,7 @@ export class TchatGateway
 
       const userRole = await this.userRoleService.findUserByChannel(
         message.channel,
-        user.user.userId,
+        user.user.uid,
       );
       const date = new Date();
       if (
@@ -222,7 +218,7 @@ export class TchatGateway
   @SubscribeMessage('restrictUser')
   async onRestrictUser(client: Socket, data: any): Promise<User> {
     const { user, toggle } = data;
-    const userUpdate = this.userService.updateRestrictedUsers(
+    const userUpdate = this.friendsService.updateRestrictedUsers(
       toggle,
       client.data.user,
       user,

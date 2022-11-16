@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, of } from 'rxjs';
 
 import { PongRepository } from './pong.repository';
-import { UserRepository } from '../users/user.repository';
+import { UserRepository } from '../users/repositories/user.repository';
 import { User } from '../users/entities/user.entity';
 import { PongGame } from './entities/pong.entity';
 
@@ -40,7 +40,7 @@ export class PongService {
     userOne.games_count += 1;
     userTwo.games_count += 1;
 
-    if (userOne.userId === newGame.winner && userTwo.userId === newGame.looser)
+    if (userOne.uid === newGame.winner && userTwo.uid === newGame.looser)
       this.playerWin(userOne, userTwo);
     else this.playerWin(userTwo, userOne);
   }
@@ -68,7 +68,7 @@ export class PongService {
 
   async getUser(id: string): Promise<User> {
     const user: User = await this.userRepository.findOne({
-      where: { userId: id },
+      where: { uid: id },
     });
     return user;
   }

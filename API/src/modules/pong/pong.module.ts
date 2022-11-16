@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TchatModule } from '../tchat/tchat.module';
 import { UserModule } from '../users/user.module';
 import { PongRepository } from './pong.repository';
-import { UserRepository } from '../users/user.repository';
+import { UserRepository } from '../users/repositories/user.repository';
 import { PongGame } from './entities/pong.entity';
 import { PongService } from './pong.service';
 import { PongController } from './pong.controller';

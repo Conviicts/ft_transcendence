@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Controller, Get, Res, UseGuards, Req } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { JwtService } from '@nestjs/jwt';
 
 import { FortyTwoGuard } from '../guards/auth.guard';
@@ -17,7 +17,7 @@ export class AuthController {
   @UseGuards(FortyTwoGuard)
   login() {}
 
-  @ApiOperation({ summary: 'Redirection to frontend after 42 authentication' })
+  @ApiExcludeEndpoint()
   @Get('redirect')
   @UseGuards(FortyTwoGuard)
   async redirect(@Res({ passthrough: true }) res: Response, @Req() req) {

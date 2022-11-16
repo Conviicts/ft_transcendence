@@ -19,7 +19,7 @@ export class AdminController {
     description: "set is as 'users' or 'admins'",
   })
   @UseGuards(AuthGuard('jwt'), UserGuard, AdminGuard)
-  @Get('/admins')
+  @Get('/')
   getAllAdmin(@Param('type') type): Promise<Partial<User[]>> {
     if (type && type == 'admins') return this.adminService.getAdmin();
     else return this.adminService.getUsers();

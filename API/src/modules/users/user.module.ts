@@ -7,11 +7,11 @@ import { User } from './entities/user.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
-import { provideCustomRepository } from './custom-repository.util';
+import { provideCustomRepository } from '../../custom-repository.util';
 import { Avatar } from './entities/avatar.entity';
-import { AvatarService } from './avatar.service';
+import { AvatarService } from './services/avatar.service';
 
 @Module({
   imports: [

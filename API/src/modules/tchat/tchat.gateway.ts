@@ -19,7 +19,7 @@ import { UserConnected } from './guards/user-connected.guard';
 import { IChannel, IJoinedChannel } from './interfaces/channel.interface';
 import { IUserConnected } from '../users/interfaces/user.interface';
 
-import { UserService } from '../users/user.service';
+import { UserService } from '../users/services/user.service';
 import { IMessage } from './interfaces/message.interface';
 
 @WebSocketGateway({

@@ -9,7 +9,7 @@ import {
 import jwt_decode from 'jwt-decode';
 
 import { User } from '../entities/user.entity';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class UserGuard implements CanActivate {

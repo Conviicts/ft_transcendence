@@ -10,7 +10,7 @@ import { PongService } from './pong.service';
 import { PongController } from './pong.controller';
 import { User } from '../users/entities/user.entity';
 
-import { provideCustomRepository } from '../users/custom-repository.util';
+import { provideCustomRepository } from '../../custom-repository.util';
 
 @Module({
   imports: [

@@ -16,7 +16,7 @@ import { UserRole } from '../users/entities/user-role.entity';
 import { UserRoleService } from './services/user-role.service';
 import { TchatGateway } from './tchat.gateway';
 
-import { provideCustomRepository } from '../users/custom-repository.util';
+import { provideCustomRepository } from '../../custom-repository.util';
 
 @Module({
   imports: [

@@ -13,17 +13,17 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 
-import { User } from './entities/user.entity';
+import { User } from '../entities/user.entity';
 import {
   NewUserDTO,
   UpdateUserDTO,
   LoginUserDTO,
   User42DTO,
-} from './dto/user.dto';
-import { UserRepository } from './user.repository';
-import { JwtPayload } from './strategy/jwt.strategy';
-import { UserState } from './interfaces/user-state.interface';
-import { AvatarService } from './avatar.service';
+} from '../dto/user.dto';
+import { UserRepository } from '../user.repository';
+import { JwtPayload } from '../strategy/jwt.strategy';
+import { UserState } from '../interfaces/user-state.interface';
+import { AvatarService } from '../services/avatar.service';
 import { Socket } from 'socket.io';
 
 @Injectable()

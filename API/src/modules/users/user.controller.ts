@@ -24,7 +24,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { UserGuard } from './guards/user.guard';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { User } from './entities/user.entity';
 import { NewUserDTO, LoginUserDTO, UpdateUserDTO } from './dto/user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';

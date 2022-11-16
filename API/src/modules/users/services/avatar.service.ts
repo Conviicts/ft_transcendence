@@ -7,8 +7,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Readable } from 'stream';
 import { Repository } from 'typeorm';
-import { Avatar } from './entities/avatar.entity';
-import { User } from './entities/user.entity';
+import { Avatar } from '../entities/avatar.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class AvatarService {

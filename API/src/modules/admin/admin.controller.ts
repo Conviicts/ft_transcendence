@@ -16,7 +16,7 @@ export class AdminController {
   @ApiParam({
     name: 'admins',
     required: true,
-    description: 'get admins or users',
+    description: 'get admins instead of users',
   })
   @UseGuards(AuthGuard('jwt'), UserGuard, AdminGuard)
   @Get('/')

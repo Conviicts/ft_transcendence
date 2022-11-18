@@ -34,8 +34,6 @@ export class UserService {
 
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
-    @InjectRepository(FriendsRepository)
-    private friendsRepository: FriendsRepository,
     private jwtService: JwtService,
   ) {}
 
@@ -83,10 +81,10 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async currentUser(user: User): Promise<Partial<User>> {
+  async currentUser(uid: string): Promise<Partial<User>> {
     let userFound: User = undefined;
     userFound = await this.userRepository.findOne({
-      where: { uid: user.uid },
+      where: { uid },
     });
     if (!userFound) throw new NotFoundException('No user found');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

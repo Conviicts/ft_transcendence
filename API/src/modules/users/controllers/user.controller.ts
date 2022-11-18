@@ -78,15 +78,6 @@ export class UserController {
     return userRet;
   }
 
-  @Get('/:id')
-  async getUser(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<Partial<User>> {
-    const user = await this.userService.getUserById(id);
-    const { password, ...newUser } = user;
-    return newUser;
-  }
-
   @ApiOperation({ summary: 'Get all info of current user' })
   @ApiOkResponse({ description: 'Provide you your user information' })
   @ApiUnauthorizedResponse({
@@ -95,8 +86,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'), UserGuard)
   @Get('/me')
   me(@Req() req): Promise<Partial<User>> {
-    const user: User = req.user;
-    return this.userService.currentUser(user);
+    return this.userService.currentUser(req.user.uid);
   }
 
   @ApiOperation({ summary: 'Check if 2FA is activated' })
@@ -175,5 +165,14 @@ export class UserController {
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('jwt');
     return { message: 'User is logged out' };
+  }
+
+  @Get('/:id')
+  async getUser(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Partial<User>> {
+    const user = await this.userService.getUserById(id);
+    const { password, ...newUser } = user;
+    return newUser;
   }
 }

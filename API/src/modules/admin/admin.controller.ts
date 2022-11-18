@@ -14,14 +14,16 @@ export class AdminController {
 
   @ApiOperation({ description: 'Get list of users/admins' })
   @ApiParam({
-    name: 'type',
-    required: false,
-    description: "set is as 'users' or 'admins'",
+    name: 'admins',
+    required: true,
+    description: 'get admins or users',
   })
   @UseGuards(AuthGuard('jwt'), UserGuard, AdminGuard)
   @Get('/')
-  getAllAdmin(@Param('type') type): Promise<Partial<User[]>> {
-    if (type && type == 'admins') return this.adminService.getAdmin();
+  getAllAdminsOrUsers(
+    @Param('admins') admins: boolean,
+  ): Promise<Partial<User[]>> {
+    if (admins) return this.adminService.getAdmin();
     else return this.adminService.getUsers();
   }
 }

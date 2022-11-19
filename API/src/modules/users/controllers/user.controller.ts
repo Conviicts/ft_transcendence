@@ -13,6 +13,7 @@ import {
   UseInterceptors,
   Param,
   ParseUUIDPipe,
+  StreamableFile,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -31,6 +32,7 @@ import { UserGuard } from '../guards/user.guard';
 import { UserService } from '../services/user.service';
 import { User } from '../entities/user.entity';
 import { NewUserDTO, LoginUserDTO, UpdateUserDTO } from '../dto/user.dto';
+import { Readable } from 'typeorm/platform/PlatformTools';
 
 @ApiTags('Users')
 @Controller('api/user')
@@ -167,6 +169,29 @@ export class UserController {
     return { message: 'User is logged out' };
   }
 
+  @ApiOperation({ summary: 'Get user avatar' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id/avatar')
+  async getAvatar(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<StreamableFile> {
+    const avatar = await this.userService.getAvatar(id);
+    response.set({
+      'Content-Disposition': `inline; filename="${avatar.name}"`,
+      'Content-Type': 'image/*',
+    });
+    return new StreamableFile(Readable.from(avatar.data));
+  }
+
+  @ApiOperation({ summary: 'Get user' })
+  @ApiUnauthorizedResponse({
+    description: "You don't have access to this",
+  })
+  @UseGuards(AuthGuard('jwt'))
   @Get('/:id')
   async getUser(
     @Param('id', ParseUUIDPipe) id: string,

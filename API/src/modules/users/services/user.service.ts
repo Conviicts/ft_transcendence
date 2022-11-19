@@ -26,6 +26,7 @@ import { JwtPayload } from '../strategy/jwt.strategy';
 import { UserState } from '../interfaces/user-state.interface';
 import { AvatarService } from '../services/avatar.service';
 import { Socket } from 'socket.io';
+import { Avatar } from '../entities/avatar.entity';
 
 @Injectable()
 export class UserService {
@@ -109,6 +110,14 @@ export class UserService {
       const accessToken: string = await this.jwtService.sign(payload);
       res.cookie('jwt', accessToken, { httpOnly: true });
     }
+  }
+
+  async getAvatar(uid: string): Promise<Avatar> {
+    const user: User = await this.getUser(uid);
+    if (!user.avatar)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    return user.avatar;
   }
 
   async setAvatar(uid: string, file: Express.Multer.File): Promise<void> {

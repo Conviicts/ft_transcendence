@@ -7,8 +7,9 @@
 </head>
 
 <body>
-  <button onclick="connect()">connect</button>
-  <button onclick="disconnect()">disconnect</button>
+  <button onclick="connectnotify()">connect</button>
+  <button onclick="disconnectnotify()">disconnect</button>
+  <h1 id="state">Offline</h1>
   <div>
     <h1>messages</h1>
     <ul id="messages"></ul>
@@ -29,7 +30,8 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.js"></script>
-  <script src="./chat.js"></script>
+  <!-- <script src="./chat.js"></script> -->
+  <script src="./notify.js"></script>
 </body>
 
 </html>

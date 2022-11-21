@@ -6,7 +6,8 @@ import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { TchatModule } from './tchat/tchat.module';
-import { PongModule } from './pong/pong.module';
+import { NotifyModule } from './notify/notify.module';
+// import { PongModule } from './pong/pong.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { PongModule } from './pong/pong.module';
     UserModule,
     AdminModule,
     TchatModule,
-    PongModule,
+    NotifyModule,
+    // PongModule,
   ],
   providers: [],
 })

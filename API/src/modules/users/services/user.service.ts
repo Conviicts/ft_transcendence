@@ -12,6 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { parse } from 'cookie';
 
 import { User } from '../entities/user.entity';
 import {
@@ -21,17 +22,18 @@ import {
   User42DTO,
 } from '../dto/user.dto';
 import { UserRepository } from '../repositories/user.repository';
-import { FriendsRepository } from '../repositories/friends.repository';
 import { JwtPayload } from '../strategy/jwt.strategy';
 import { UserState } from '../interfaces/user-state.interface';
 import { AvatarService } from '../services/avatar.service';
 import { Socket } from 'socket.io';
 import { Avatar } from '../entities/avatar.entity';
+import { NotifyService } from '../../notify/notify.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly avatarService: AvatarService,
+    private readonly notifyService: NotifyService,
 
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
@@ -146,6 +148,7 @@ export class UserService {
     res.status = status;
     try {
       await this.userRepository.save(res);
+      this.notifyService.emitStatus(uid, status);
     } catch (e) {
       console.log(e);
       throw new InternalServerErrorException();
@@ -205,15 +208,15 @@ export class UserService {
   }
 
   async getUserBySocket(client: Socket): Promise<User> {
-    const authorization = client.handshake.headers.authorization;
-    const token = authorization && authorization.split(' ')[1];
-    if (!token) return null;
-
-    const payload = this.jwtService.verify(token);
-    if (!payload) return null;
-
-    const user = await this.getUserById(payload.sub).catch(() => null);
-    if (!user) return null;
+    const cookie = client.handshake.headers['cookie'];
+    const { jwt } = parse(cookie);
+    const payload: JwtPayload = this.jwtService.verify(jwt, {
+      secret: process.env.SECRET,
+    });
+    const { username } = payload;
+    const user: User = await this.userRepository.findOne({
+      where: { username },
+    });
     return user;
   }
 

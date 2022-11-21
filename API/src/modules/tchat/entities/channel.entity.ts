@@ -1,60 +1,25 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
   JoinTable,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
+  ManyToMany,
+  TableInheritance,
 } from 'typeorm';
 
 import { User } from '../../users/entities/user.entity';
-import { JoinedChannel } from './joined-channel.entity';
-import { UserRole } from '../../users/entities/user-role.entity';
-import { Message } from './message.entity';
+import { MessageLogs } from './message-log.entity';
 
-@Entity({ name: 'channels' })
+@Entity()
+@TableInheritance()
 export class Channel {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column('boolean', { default: false })
-  isDM: boolean;
-
-  @Column('text', { default: '' })
-  name: string;
-
-  @ManyToMany(() => User, { onDelete: 'CASCADE' })
+  @ManyToMany(() => User)
   @JoinTable()
   users: User[];
 
-  @Column('boolean', { default: false })
-  isPublic: boolean;
-
-  @Column('text', { default: '' })
-  password: string;
-
-  @OneToMany(() => JoinedChannel, (joinedChannel) => joinedChannel.channel, {
-    cascade: true,
-  })
-  joinedUsers: JoinedChannel[];
-
-  @OneToMany(() => UserRole, (roleUser) => roleUser.channel, { cascade: true })
-  userRole: UserRole[];
-
-  @Column('simple-array', { default: [] })
-  admins: string[];
-
-  @OneToMany(() => Message, (message) => message.channel, { cascade: true })
-  messages: Message[];
-
-  @Column('text', { default: '' })
-  owner: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @ManyToMany(() => MessageLogs)
+  @JoinTable()
+  logs: MessageLogs[];
 }

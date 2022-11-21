@@ -5,17 +5,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
   OneToOne,
 } from 'typeorm';
 
 import { UserState } from '../interfaces/user-state.interface';
-import { JoinedChannel } from '../../tchat/entities/joined-channel.entity';
-import { Message } from '../../tchat/entities/message.entity';
-import { ConnectedUser } from '../../tchat/entities/connected-user.entity';
-import { PongGame } from 'src/modules/pong/entities/pong.entity';
 import { Avatar } from './avatar.entity';
 
 @Entity({ name: 'users' })
@@ -49,33 +42,11 @@ export class User {
   @Column('text', { default: UserState.OFFLINE })
   status: UserState;
 
-  @OneToMany(() => ConnectedUser, (connection) => connection.user)
-  connections: ConnectedUser[];
-
-  @OneToMany(() => JoinedChannel, (joinedChannel) => joinedChannel.channel)
-  joinedChannels: JoinedChannel[];
-
-  @OneToMany(() => Message, (message) => message.user)
-  messages: Message[];
-
   @Column('simple-array')
   friends: string[];
 
   @Column('simple-array')
   restricted: string[];
-
-  @Column('int', { default: 0 })
-  wins: number;
-
-  @Column('int', { default: 0 })
-  looses: number;
-
-  @Column('int', { default: 0 })
-  games_count: number;
-
-  @ManyToMany(() => PongGame, (pong) => pong.users, { eager: true })
-  @JoinTable()
-  games: PongGame[];
 
   @CreateDateColumn()
   createdAt: Date;

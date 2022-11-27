@@ -7,11 +7,13 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { PublicChannel } from '../entities/public-channel.entity';
 import { IPassword } from '../interfaces/password.interface';
 import { PublicChannelService } from '../services/public-channel.service';
 
+@ApiTags('Tchat')
 @Controller('tchat')
 export class TchatController {
   constructor(private readonly publicChannelService: PublicChannelService) {}

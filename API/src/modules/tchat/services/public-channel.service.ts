@@ -197,7 +197,7 @@ export class PublicChannelService {
     return channels;
   }
 
-  async getChannels(uid: string): Promise<PublicChannel[]> {
+  async getUserChannels(uid: string): Promise<PublicChannel[]> {
     const uncompleted: PublicChannel[] = await this.publicChannelRepository
       .createQueryBuilder('channel')
       .innerJoin('channel.users', 'user')

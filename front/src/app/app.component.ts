@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { AuthService } from './shared/auth/auth.service';
 import { User, UserModel } from './shared/models/user.model';
@@ -11,10 +12,10 @@ import { User, UserModel } from './shared/models/user.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-	title = 'front';
+	title = 'Transcendence';
 	user: User;
 
-	constructor(private authService: AuthService) {
+	constructor(private authService: AuthService, private router: Router) {
 		this.user = new User({uid: 0, username: ''});
 	}
 
@@ -27,6 +28,7 @@ export class AppComponent {
 		.subscribe(
 			(data: UserModel) => {
 				this.user = new User(data)
+				this.router.navigate(["/test"]);
 			},
 			error => console.log('oops', error)
 		);

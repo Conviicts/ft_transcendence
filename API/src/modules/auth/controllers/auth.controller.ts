@@ -25,7 +25,7 @@ export class AuthController {
     const auth = false;
     const payload: JwtPayload = { username, auth };
     const accessToken: string = await this.jwtService.sign(payload);
-    res.cookie('jwt', accessToken, { httpOnly: true });
+    res.cookie('jwt', accessToken, { httpOnly: false });
     res.redirect(process.env.FRONT_URI);
   }
 }

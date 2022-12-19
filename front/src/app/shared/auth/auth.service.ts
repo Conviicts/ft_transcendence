@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UserModel } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+	constructor(private http: HttpClient) {}
 
-  constructor(private router: Router) { }
+	login() {
+		window.location.href = 'http://localhost:8080/api/auth/login';
+	}
 
-  login() {
-    window.location.href = 'http://localhost:8080/api/auth/login';
-  }
+	profil(): Observable<UserModel> {
+		return this.http.get<UserModel>("http://localhost:8080/api/user/me", { withCredentials:true });
+	}
 }

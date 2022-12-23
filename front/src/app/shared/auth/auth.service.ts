@@ -14,6 +14,10 @@ export class AuthService {
 	}
 
 	profil(): Observable<UserModel> {
-		return this.http.get<UserModel>("http://localhost:8080/api/user/me", { withCredentials:true });
+		return this.http.get<UserModel>("http://localhost:8080/api/user/me", { withCredentials: true });
+	}
+
+	get2FAImage(): Observable<Blob> {
+		return this.http.get("http://localhost:8080/api/auth/2fa", { responseType: 'blob', withCredentials: true });
 	}
 }

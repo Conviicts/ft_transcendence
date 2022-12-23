@@ -22,7 +22,7 @@ export class JWTTokenService {
 
 	decodeToken() {
 		if (this.jwtToken) {
-		this.decodedToken = jwt_decode(this.jwtToken);
+			this.decodedToken = jwt_decode(this.jwtToken);
 		}
 	}
 
@@ -53,11 +53,11 @@ export class JWTTokenService {
 	}
 
 	isTokenExpired(): boolean {
-	const expiryTime: any = this.getExpiryTime();
-	if (expiryTime) {
-		return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
-	} else {
-		return false;
-	}
+		const expiryTime: any = this.getExpiryTime();
+		if (expiryTime) {
+			return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
+		} else {
+			return false;
+		}
 	}
 }

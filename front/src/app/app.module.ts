@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { CookieService } from './shared/auth/cookies';
 import { AuthService } from './shared/auth/auth.service';
+import { ImageService } from './shared/image.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { AuthService } from './shared/auth/auth.service';
     AppRoutingModule,
 	HttpClientModule
   ],
-  providers: [CookieService],
+  providers: [CookieService, ImageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

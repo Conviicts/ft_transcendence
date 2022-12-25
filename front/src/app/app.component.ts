@@ -28,7 +28,7 @@ export class AppComponent {
 		.subscribe(
 			(data: UserModel) => {
 				this.user = new User(data)
-				this.router.navigate(["/test"]);
+				this.router.navigate(["/Home"]);
 			},
 			error => console.log('oops', error)
 		);

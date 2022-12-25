@@ -1,0 +1,64 @@
+.msg-card {
+	background-color: #23272D;
+	box-sizing: border-box;
+	width: 97%;
+	height: 97%;
+	border-radius: 15px;
+	margin: 20px auto;
+	padding: 10px 30px;
+	box-shadow: rgb(0, 0, 0) 4px 4px 20px;
+	.card {
+		//background-color : #1E2126;
+		background-color : #545557 !important;
+		box-shadow: rgb(0, 0, 0) 4px 4px 20px;
+
+	}
+	/*.card-body {
+		//background-color : #1E2126;
+		background-color : #545557;
+		border-radius: 15px;
+		color: rgb(138, 171, 200);
+	}
+	.form-group {
+		background-color : #1E2126;
+		color: rgb(138, 171, 200);
+	}*/
+	.form-control {
+		background-color : #545557 !important;
+		box-shadow: rgb(0, 0, 0) 4px 4px 20px;
+
+		//color: rgb(138, 171, 200);
+	}
+
+	button {
+		background-color: transparent;
+		box-sizing: border-box;
+		justify-content: center;
+		padding: 5px 10px;
+		border: none;
+		box-shadow: rgb(0, 0, 0) 3px 3px 7px;
+		margin : auto;
+		text-align: center;
+		//outline: none;
+		//margin: 0 auto;
+		//font-size: 50%;
+		//font-weight: 50%;
+		width: 100%;
+		height: 50%;
+		&:active {
+			transform: translate(1px, 1px);
+	 		box-shadow: rgb(0, 0, 0) 0 0 5px;
+		}
+	}
+	overflow: scroll;
+	scroll-behavior: smooth;
+}
+
+.msg-card::-webkit-scrollbar {
+	display: none;
+}
+
+.msg-card {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}

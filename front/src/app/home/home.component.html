@@ -1,8 +1,17 @@
-<button type="button" (click)="getImageFromService()">Get Image</button>
-
-<img [src]="imageToShow"
-     alt="Place image title"
-     >
-<ng-template #noImageFound>
-     <!-- <img src="fallbackImage.png" alt="Fallbackimage"> -->
-</ng-template>
+<div id="container">
+	<div class="col-2 vh-100" id="left">
+		<app-chat *ngFor="let faceSnap of FaceSnaps"[faceSnap]="faceSnap"></app-chat>
+		<li *ngFor="let item of this.chatservice.channels">{{ item["id"] }}  {{ item["name"] }}</li>
+	</div>
+	<div class="col-8 vh-100">			
+		<app-msg>
+		</app-msg>
+	</div>
+	<div class="col-2" id="right">
+		<app-channel>
+			<ul>
+				<li *ngFor="let item of this.chatservice.channels">{{ item["id"] }}  {{ item["name"] }}</li>
+			</ul>
+		</app-channel>
+	</div>
+</div>

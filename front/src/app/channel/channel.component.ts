@@ -4,15 +4,15 @@ import { Observable, map } from 'rxjs';
 import { AuthService } from '../shared/auth/auth.service';
 import { JWTTokenService } from '../shared/auth/token';
 import { ChatService } from '../shared/chat/chat.service';
-import { ImageService } from '../shared/image.service';
 import { User, UserModel } from '../shared/models/user.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-channel',
+  templateUrl: './channel.component.html',
+  styleUrls: ['./channel.component.scss']
 })
-export class HomeComponent {
+
+export class ChannelComponent {
   channel_n: string;
 
   constructor(public chatservice: ChatService) {

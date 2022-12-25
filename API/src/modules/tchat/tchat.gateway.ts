@@ -37,17 +37,17 @@ export class TchatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       await this.userService.updateStatus(UserState.CHATTING, user.uid);
 
+      console.log('aaa')
       const user_channels = await this.publicChannelService.getUserChannels(
         user.uid,
       );
       const private_channels = await this.privateMessageService.getChannels(
         user.uid,
       );
-
+        
       const all_channels = await this.publicChannelService.getAllChannels();
 
       client.data.user = user;
-
       client.emit('channels', {
         user,
         user_channels,
@@ -82,7 +82,7 @@ export class TchatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createChannel')
   async onCreateChannel(client: Socket, channel: any): Promise<boolean> {
-    console.log('create chan');
+    console.log(client.data);
       const createChannel: any = await this.publicChannelService.createChannel(channel, client.data.user);
       if (!createChannel) {
           return false;

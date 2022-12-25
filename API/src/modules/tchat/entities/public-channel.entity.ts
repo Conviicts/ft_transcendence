@@ -16,10 +16,6 @@ export class PublicChannel extends Channel {
   @Column({ nullable: true })
   password: string;
 
-  @ManyToMany(() => User)
-  @JoinTable()
-  users: User[];
-
   @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   owner: User;

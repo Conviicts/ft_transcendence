@@ -28,7 +28,7 @@ export class TchatController {
     @Req() req,
     @Body() channel: PublicChannel,
   ): Promise<PublicChannel> {
-    console.log(req.user);
+    console.log(req.user)
     return this.publicChannelService.createChannel(channel, req.user.userId);
   }
 

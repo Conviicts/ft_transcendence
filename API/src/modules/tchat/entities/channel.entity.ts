@@ -15,10 +15,6 @@ export class Channel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => User)
-  @JoinTable()
-  users: User[];
-
   @ManyToMany(() => MessageLogs)
   @JoinTable()
   logs: MessageLogs[];

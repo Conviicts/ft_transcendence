@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 
 import { User } from '../../users/entities/user.entity';
 import { BannedUser } from './banned.entity';
@@ -15,6 +15,10 @@ export class PublicChannel extends Channel {
 
   @Column({ nullable: true })
   password: string;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[];
 
   @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()

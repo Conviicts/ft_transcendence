@@ -14,7 +14,7 @@ import { IPassword } from '../interfaces/password.interface';
 import { PublicChannelService } from '../services/public-channel.service';
 
 @ApiTags('Tchat')
-@Controller('tchat')
+@Controller('api/tchat')
 export class TchatController {
   constructor(private readonly publicChannelService: PublicChannelService) {}
 
@@ -28,6 +28,7 @@ export class TchatController {
     @Req() req,
     @Body() channel: PublicChannel,
   ): Promise<PublicChannel> {
+    console.log(req.user);
     return this.publicChannelService.createChannel(channel, req.user.userId);
   }
 

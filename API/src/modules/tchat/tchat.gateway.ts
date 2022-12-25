@@ -18,7 +18,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 @WebSocketGateway({
   namespace: '/tchat',
-  cors: { origin: process.env.FRONT_URI, credentials: true },
+  cors: { origin: 'http://localhost:4200', credentials: true },
 })
 export class TchatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
@@ -78,6 +78,18 @@ export class TchatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           socket.emit(event, ...args);
       });
     } catch {}
+  }
+
+  @SubscribeMessage('createChannel')
+  async onCreateChannel(client: Socket, channel: any): Promise<boolean> {
+    console.log('create chan');
+      const createChannel: any = await this.publicChannelService.createChannel(channel, client.data.user);
+      if (!createChannel) {
+          return false;
+      } else {
+        client.emit('channel', createChannel);
+          return true;
+      }
   }
 
   @SubscribeMessage('joinchannel')

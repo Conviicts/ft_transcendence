@@ -53,9 +53,9 @@ export class PublicChannelService {
 
   async createChannel(
     channel: PublicChannel,
-    userId: string,
+    user: any,
   ): Promise<PublicChannel> {
-    const admin = await this.userService.getUser(userId);
+    const admin = await this.userService.getUser(user.uid);
 
     channel.name = channel.name.replace(/\s+/g, '');
 

@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
 import { MsgComponent } from './msg/msg.component';
 import { ChannelComponent } from './channel/channel.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ChannelComponent } from './channel/channel.component';
     HomeComponent,
     ChatComponent,
     MsgComponent,
-    ChannelComponent
+    ChannelComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

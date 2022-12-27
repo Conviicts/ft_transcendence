@@ -9,19 +9,19 @@ import { AppComponent } from './app.component';
 import { CookieService } from './shared/auth/cookies';
 import { AuthService } from './shared/auth/auth.service';
 import { HomeComponent } from './home/home.component';
-import { ChatComponent } from './chat/chat.component';
 import { MsgComponent } from './msg/msg.component';
 import { ChannelComponent } from './channel/channel.component';
 import { MainComponent } from './main/main.component';
+import { PlayersComponent } from './players/players.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ChatComponent,
     MsgComponent,
     ChannelComponent,
-    MainComponent
+    MainComponent,
+    PlayersComponent
   ],
   imports: [
     BrowserModule,

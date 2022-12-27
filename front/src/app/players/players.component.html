@@ -1,0 +1,12 @@
+<div class="player-card" [ngClass]="{ online: player.status === 'online'}">
+	<div class="row align-items-center">
+		<div class="col-4">
+			<img [src]="player.imageUrl" [alt]="player.username">
+		</div>
+		<div class="col-4">
+				<button (click)="onMessages()">Send message</button>
+		</div>
+		<div class="col-4">
+				<button (click)="onGame()">🎮</button>
+		</div>
+</div>

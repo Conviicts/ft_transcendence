@@ -1,12 +1,17 @@
-<div id="container">
+<div class="container">
 	<div class="col-2 vh-100" id="left">
-		<app-chat *ngFor="let faceSnap of FaceSnaps"[faceSnap]="faceSnap"></app-chat>
+		<app-players *ngFor="let player of Players"[player]="player"></app-players>
 		<li *ngFor="let item of this.chatservice.channels">{{ item["id"] }}  {{ item["name"] }}</li>
 	</div>
 	<div class="col-8 vh-100">			
 		<app-main></app-main>
 	</div>
 	<div class="col-2 vh-100" id="right">
-		<app-channel></app-channel>
+		<div class="row flex-column vh-100">
+			<div class="col">Flex item 1</div>
+			<div class="col">Flex item 2</div>
+			<div class="col">Flex item 3</div>
+			<div class="col">Flex item 3</div>
+		</div>
 	</div>
 </div>

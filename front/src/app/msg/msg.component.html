@@ -1,14 +1,16 @@
-<div class="msg-card"  ng-controller="msgCtrl">
-	<div class="card" *ngFor="let message of messages">
-	  <div class="card-body">
-		{{ message.text }}
-	  </div>
+<div class="container-flex">
+	<div class="msg-card"  ng-controller="msgCtrl">
+		<div class="card" *ngFor="let message of messages">
+		  <div class="card-body">
+			{{ message.text }}
+		  </div>
+		</div>
 	</div>
 	<form (ngSubmit)="sendMessage()">
 		<div class="form-group">
 			<input type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage">
 		</div>
-	  	<button type="submit" class="btn btn-primary">Send</button>
+		  <button type="submit" class="btn btn-primary">Send</button>
 	</form>
 </div>
   

@@ -1,4 +1,4 @@
-<div class="container" *ngIf="user.username != ''">
+<div *ngIf="user.username != ''">
 	<router-outlet></router-outlet>
 </div>
 <div class="d-flex align-items-center justify-content-center" style="height: 100vh" *ngIf="user.username == ''">

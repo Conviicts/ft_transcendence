@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { MainService } from '../shared/main/main.service';
 
 @Component({
   selector: 'app-players',
@@ -9,6 +10,9 @@ import { Component, Input } from '@angular/core';
 export class PlayersComponent {
 	@Input() player! : Player;
 
+	constructor (public  mainService : MainService) {
+	}
+	
 	onGame() {
 
 	};

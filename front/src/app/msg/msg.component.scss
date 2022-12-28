@@ -1,33 +1,32 @@
 .container-flex {
 	height: 100%;
-	width: 100%;
-	overflow: hidden;
-	text-align: center;
-	.msg-card {
-		background-color: #23272D;
-		box-sizing: border-box;
-		width: 85%;
-		height: 80%;
-		border-radius: 15px;
-		margin: 20px auto;
-		padding: 10px 30px;
-		box-shadow: rgb(0, 0, 0) 4px 4px 20px;
-		overflow: scroll;
+	background-color: #1E2126;
+	border-radius: 15px;
+	flex-direction: column;
+}
+
+.msg-ui {
+	align-items: center;
+	height: 100%;
+	.msg-header {
+		height: 95%;
 	}
-	.msg-card::-webkit-scrollbar {
-		display: none;
+	.list-group {
+		display: flex;
+		height: 100%;
+		overflow-y: scroll;
+		width: 100%;
+		align-items: center;
 	}
-	.msg-card {
+	.list-group {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-	.form-group {
-		height: 20%;
-		background-color : #545557 !important;
-		box-shadow: rgb(0, 0, 0) 4px 4px 20px;
+	.list-group::-webkit-scrollbar {
+		display: none;
 	}
-	form {
-		width: 10;
-		bottom:10%;
+	.input-group {
+		align-items: center;
+		justify-content: center;
 	}
 }

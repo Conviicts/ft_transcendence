@@ -13,6 +13,9 @@ import { MsgComponent } from './msg/msg.component';
 import { ChannelComponent } from './channel/channel.component';
 import { MainComponent } from './main/main.component';
 import { PlayersComponent } from './players/players.component';
+import { LeftComponent } from './left/left.component';
+import { RightComponent } from './right/right.component';
+import { PongComponent } from './pong/pong.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { PlayersComponent } from './players/players.component';
     MsgComponent,
     ChannelComponent,
     MainComponent,
-    PlayersComponent
+    PlayersComponent,
+    LeftComponent,
+    RightComponent,
+    PongComponent
   ],
   imports: [
     BrowserModule,

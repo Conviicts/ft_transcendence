@@ -1,10 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { AuthService } from '../shared/auth/auth.service';
-import { JWTTokenService } from '../shared/auth/token';
-import { ChatService } from '../shared/chat/chat.service';
-import { User, UserModel } from '../shared/models/user.model';
+import { Component } from '@angular/core';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-channel',
@@ -20,8 +15,8 @@ export class ChannelComponent {
   }
 
   createChannel() {
-    if (this.channel_n)
-      this.chatservice.createChannel(this.channel_n);
+    // if (this.channel_n)
+    //   this.chatservice.createChannel(this.channel_n);
   }
 
   ngOnInit() {

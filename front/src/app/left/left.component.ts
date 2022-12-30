@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Player } from '../players/players.component';
-import { ChatService } from '../shared/chat/chat.service';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-left',

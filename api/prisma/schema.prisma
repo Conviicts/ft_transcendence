@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                            Int           @id @default(autoincrement())
+  email                         String        @unique
+  state                         UserState     @default(OFFLINE)
+  intra_name                    String?       @unique
+  intra_id                      Int?          @unique
+  avatar                        String?       @default("https://st.depositphotos.com/1052233/2885/v/600/depositphotos_28850541-stock-illustration-male-default-profile-picture.jpg")
+  username                      String?       @unique
+  description                   String?
+  friends                       User[]          @relation("friends")
+  friendOf                      User[]          @relation("friends")
+  friendsRequests               FriendRequest[] @relation("friendRequestFrom")
+  friendsRequestsTo             FriendRequest[] @relation("friendRequestTo")
+  blockedUsers                  User[]          @relation("blockedUsers")
+  blockedBy                     User[]          @relation("blockedUsers")
+  score                         Int             @default(0)
+  TFAEnabled                    Boolean         @default(false)
+  TFASecret                     String?         @unique
+  games                         Game[]          @relation("gameUserRelation")
+  games_win                     Game[]          @relation("gameWinnerRelation")
+  games_lose                    Game[]          @relation("gameLoserRelation")   
+  chat_rooms                    ChatRoom[]
+  adminOf                       ChatRoom[]      @relation("chatRoomAdminRelation")
+  Message                       Message[]
+  seenMessages                  Message[]       @relation("messageSeenBy")
+  penalities                    ChatPenality[]
+  createdAt                     DateTime        @default(now())
+  updatedAt                     DateTime        @updatedAt
+}
+
+model FriendRequest {
+  id        Int      @id @default(autoincrement())
+  from      User     @relation("friendRequestFrom", fields: [fromId], references: [id])
+  fromId    Int
+  to        User     @relation("friendRequestTo", fields: [toId], references: [id])
+  toId      Int
+  status    FriendStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id          Int       @id @default(autoincrement())
+  users       User[]    @relation("gameUserRelation")
+  state       GameState @default(WAITING)
+  winner      User?     @relation(fields: [winnerId], references: [id], "gameWinnerRelation")
+  winnerId    Int?  
+  loser       User?     @relation(fields: [loserId], references: [id], "gameLoserRelation")
+  loserId     Int? 
+  winnerScore Int?
+  loserScore  Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+model ChatRoom {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  type        ChatRoomType  @default(GROUP)
+  users       User[]
+  ownerId     Int
+  admins      User[]        @relation("chatRoomAdminRelation")
+  public      Boolean       @default(false)
+  password    String?
+  penalities  ChatPenality[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  messages    Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  room      ChatRoom @relation(fields: [roomId], references: [id])
+  roomId    Int
+  seenBy    User[]   @relation("messageSeenBy")
+}
+
+model ChatPenality {
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  room      ChatRoom    @relation(fields: [roomId], references: [id])
+  roomId    Int
+  type      PenalityType     @default(MUTE)
+  timetype  PenalityTimeType @default(PERM)
+  endTime   DateTime
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+enum ChatRoomType {
+  GROUP
+  DM
+}
+
+enum UserState {
+  ONLINE
+  OFFLINE
+  UNAVAILABLE
+  WAITING
+  INGAME
+}
+
+enum GameState {
+  WAITING
+  STARTED
+  ENDED
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum PenalityType {
+  MUTE
+  BAN
+}
+
+enum PenalityTimeType {
+  PERM
+  TEMP
+}

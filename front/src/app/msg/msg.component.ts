@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ChatService } from '../services/chat/chat.service';
+import { Message, ChatRoom } from '../models/chat.model';
+import { CurrentUserService } from '../services/user/current-user.service';
+import { IUser } from '../models/user.model';
 
 @Component({
   selector: 'app-msg',
@@ -7,56 +12,29 @@ import { Component } from '@angular/core';
 })
 export class MsgComponent {
 
-	messages: {text: string}[] = [];
-	newMessage = '';
-  
-	sendMessage() {
-	  this.messages.push({text: this.newMessage});
-	  this.newMessage = '';
+	message!: Message;
+	//msgs : Message[] = [];
+	newMessage:string =  '';
+	user?: IUser;
+
+	constructor (public chatService : ChatService, public currUser : CurrentUserService) {
+		currUser.getCurrenUserB().subscribe(data => {
+			this.user = data;
+		})
+		
+	}
+
+
+  	sendMessage() {
+		const message: Message = {
+			content: this.newMessage,
+			user: { id: this.user?.id, username: this.user?.username} as IUser,
+			room: { id: 1, name: 'Room 1' } as ChatRoom,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			seenBy: []
+		};
+		//this.msgs.push(this.newMessage);
+	 	this.chatService.sendMessage(this.message);
 	}
 }
-
-/*import { Component, OnInit } from '@angular/core';
-//import { io, Socket } from 'socket.io-client';
-
-@Component({
-  selector: 'app-msg',
-  templateUrl: './msg.component.html',
-  styleUrls: ['./msg.component.css']
-})
-
-export class MsgComponent /*implements OnInit {
-  /*contacts = [
-    { name: 'John Doe' },
-    { name: 'Jane Doe' },
-    { name: 'James Smith' },
-    { name: 'Mary Johnson' }
-  ];
-  messages = [];
-  newMessageText = '';
-
-  constructor(private socket: Socket) { }
-
-  ngOnInit() {
-    this.socket.on('message', (data) => {
-      this.handleMessage(data);
-    });
-
-    this.socket.emit('getMessages');
-  }
-
-  handleMessage(data) {
-    // mettez à jour la liste des messages avec le nouveau message reçu
-   // this.messages.push(data);
-  }*/
-
- /* sendMessage() {
-    if (this.newMessageText.trim().length === 0) {
-      return;
-    }
-
-    // utilisez la connexion Socket.IO pour envoyer le nouveau message au serveur
-    this.socket.emit('sendMessage', { text: this.newMessageText });
-    this.newMessageText = '';
-  }
-}*/

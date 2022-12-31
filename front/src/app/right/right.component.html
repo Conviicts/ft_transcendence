@@ -17,7 +17,11 @@
 		</div>
 	</div>
 	<div class="my-card item-3">
-		<app-channel></app-channel>
+		<div class="container-flex">
+	Channel
+	<input type="text" #input (input)="channel_n = input.value">
+	<button (click)="createChannel()">new channel</button>
+</div>
 	</div>
 	<div class="my-card item-4">
 		<p>Games : {{this.MyUser?._count?.games}}</p>

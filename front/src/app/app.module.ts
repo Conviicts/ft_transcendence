@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MsgComponent } from './msg/msg.component';
-import { ChannelComponent } from './channel/channel.component';
 import { MainComponent } from './main/main.component';
 import { PlayersComponent } from './players/players.component';
 import { LeftComponent } from './left/left.component';
@@ -21,7 +20,6 @@ import { LoginComponent } from './login/login.component';
 import { TokenComponent } from './token/token.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NavBarService } from './services/user/navbar.service';
 import { UserService } from './services/user/user.service';
 import { CurrentUserService } from './services/user/current-user.service';
 import { PlayerComponent } from './player/player.component';
@@ -42,8 +40,6 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     HomeComponent,
-    MsgComponent,
-    ChannelComponent,
     MainComponent,
     PlayersComponent,
     LeftComponent,
@@ -51,7 +47,7 @@ export function tokenGetter() {
     PongComponent,
     LoginComponent,
     TokenComponent,
-    PlayerComponent,
+    PlayerComponent
   ],
   imports: [
     JwtModule.forRoot({
@@ -72,7 +68,7 @@ export function tokenGetter() {
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [NavBarService, UserService, CurrentUserService, HttpClient],
+  providers: [UserService, CurrentUserService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

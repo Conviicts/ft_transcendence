@@ -4,7 +4,6 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { Socket } from 'ngx-socket-io';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthTokenService } from 'src/app/services/auth/auth.service';
-import { NavBarService } from 'src/app/services/user/navbar.service';
 
 
 
@@ -20,7 +19,6 @@ export class TokenComponent implements OnInit {
     private router: Router,
     private token: AuthTokenService,
     private jwtHelper: JwtHelperService,
-    private navbar: NavBarService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
   ) {}
@@ -36,7 +34,6 @@ export class TokenComponent implements OnInit {
       this.socket.disconnect();
       this.socket.ioSocket.io.opts.query = 'token=' + this.token.getToken();
       this.socket.connect();
-      this.navbar.show();
       this.router.navigate(['/home']);
     } catch(Error) {
       this.snackBar.open("Vous devez vous reconnecter.", 'X', {

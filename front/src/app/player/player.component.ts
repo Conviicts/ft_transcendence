@@ -7,7 +7,7 @@ import { CurrentUserService } from '../services/user/current-user.service';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent {
+export class PlayerComponent implements OnInit {
 
 	MyUser!:IUser;
 	MyTFA?: TFASecret;

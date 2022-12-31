@@ -2,55 +2,57 @@
 	height: 100%;
 	width: 100%;
 	background-color: #1E2126;
+	color: gray;
 	border-radius: 15px;
 	flex-direction: column;
 	align-items: center;
-	
-}
-
-.pong {
-	width: 100%;
-	height: 100%;
-}
-
-.custom-button {
-	width: 100%;
-	height: 35px;
-	margin-bottom: 5px;
-	background-color:#15181C;
-	color: white;
-	font-size: auto;
-	text-size-adjust: auto;
-	border-radius: 5px;
-}
-
-.my-card {
-	height: 25%;
-	width: 100%;
-	border-radius: 10px;
+	.my-card {
+		height: 24%;
+		width: 100%;
+		border-radius: 10px;
+	}
 }
 
 .item-1 {
-	justify-content: center;
 	width: 100%;
-	display: flex;
 	height: 70px;
 	border-radius: 10px;
+	display: flex;
 	background-color: #151617;
+	box-shadow: rgb(0, 0, 0) 3px 3px 7px;
+	align-items: center;
 	.flex-1 {
-		align-self: center;
+		width: 20%;
+		padding: 5px 0px;
+		margin: 5% 5%;
+		img {
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+		}
 	}
-	
+	.flex-1{
+		transform: translate(1px, 1px);
+	}
 	.flex-2 {
-		text-align: center;
-		align-self: center;
-
-		flex: auto;
+		margin: 10% 5%;
+		width: 80%;
+		line-break: anywhere;
+		overflow: hidden;
+		line-height: 16px;
+		font-size: 13px;
+	}
+	&:hover {
+		box-shadow: lightgray 0 0 5px;
+	}
+	&:active {
+		transform: translate(1px, 1px);
+		box-shadow: lightgray 0 0 5px;
 	}
 }
+
 .item-2 {
 	align-items: center;
-	background-color: #151617;
 	border-radius: 10px;
 }
 .item-3 {
@@ -59,7 +61,42 @@
 	border-radius: 10px;
 }
 .item-4 {
-	align-items: center;
+	justify-content: center;
+	margin-top : 20px;
+	p {
+		background-color: #151617;
+		box-sizing: border-box;
+		color: gray;
+		width: 100%;
+		padding: 5px;
+		border: none;
+		box-shadow: rgb(0, 0, 0) 3px 3px 7px;
+		outline: none;
+		border-radius: 5px;
+	}
+}
+
+.pong {
+	width: 100%;
+	height: 100%;
+}
+
+.custom-button {
 	background-color: #151617;
+	box-sizing: border-box;
+	color: gray;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border: none;
+	box-shadow: rgb(0, 0, 0) 3px 3px 7px;
+	outline: none;
 	border-radius: 10px;
+	&:active {
+		transform: translate(1px, 1px);
+		box-shadow: lightgray 0 0 5px;
+	}
+	&:hover {
+		box-shadow: lightgray 0 0 5px;
+	}
 }

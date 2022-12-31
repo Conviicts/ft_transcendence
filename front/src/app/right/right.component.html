@@ -2,10 +2,10 @@
 	<div class="my-card">
 		<div class="item-1">
 			<div class="flex-1">
-				<img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg" style="width: 40px; height: 40px; border-radius: 50%; display: block;">
+				<img [src]="this.MyUser?.avatar">
 			</div>
 			<div class="flex-2">
-				<p>MY LOGIN</p>
+				{{this.MyUser?.username}}
 			</div>
 		</div>
 	</div>
@@ -20,9 +20,8 @@
 		<app-channel></app-channel>
 	</div>
 	<div class="my-card item-4">
-		<p>match :</p>
-		<p>victoire:</p>
-		<p>defaite:</p>
-		<p>etc:</p>
+		<p>Games : {{this.MyUser?._count?.games}}</p>
+		<p>Lose  : {{this.MyUser?._count?.games_lose}}</p>
+		<p>Win   : {{this.MyUser?._count?.games_win}}</p>
 	</div>
 </div>

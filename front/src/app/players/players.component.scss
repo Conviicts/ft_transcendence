@@ -27,43 +27,34 @@
 	button {
 		background-color: transparent;
 		box-sizing: border-box;
-		justify-content: center;
-		align-items: center;
-		align-content: center;
 		padding: 5px 10px;
 		border: none;
 		height: 20px;
-		box-shadow: rgb(0, 0, 0) 3px 3px 7px;
-		margin : 0 auto;
-		text-align: center;
-		outline: none;
+		//box-shadow: rgb(0, 0, 0) 3px 3px 7px;
 		font-size: 100%;
 		font-weight: 100%;
 		border-radius: 15px;
-		width: 100%;
+		width: auto;
 		height: 100%;
-		.p {
-			box-sizing: border-box;
-			justify-content: center;
-			align-items: center;
-			align-content: center;
-			width: 100%;
+		&:active {
+			transform: translate(1px, 1px);
+			box-shadow: rgb(246, 246, 247) 3px 3px 7px;
 		}
-			&:active {
-				transform: translate(1px, 1px);
-				 box-shadow: lightgray 0 0 5px;
-			}
+		&:hover {
+			//background-color: antiquewhite;
+			box-shadow: rgb(5, 16, 60) 3px 3px 7px;
 		}
+	}
 }
 
 .online {
 	background-color: rgba(lightgreen, 0.4);
 	color: darkgreen;
-	button {
+	/*button {
 		box-shadow: rgb(5, 16, 60) 3px 3px 7px;
 		color: darkgreen;
 		&:active {
 			box-shadow:  rgb(5, 16, 60) 0 0 5px;
 		}
-	}
-  }
+	}*/
+}

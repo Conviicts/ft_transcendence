@@ -24,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavBarService } from './services/user/navbar.service';
 import { UserService } from './services/user/user.service';
 import { CurrentUserService } from './services/user/current-user.service';
+import { PlayerComponent } from './player/player.component';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3001', options: {
@@ -50,6 +51,7 @@ export function tokenGetter() {
     PongComponent,
     LoginComponent,
     TokenComponent,
+    PlayerComponent,
   ],
   imports: [
     JwtModule.forRoot({

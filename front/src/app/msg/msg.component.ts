@@ -9,7 +9,7 @@ export class MsgComponent {
 
 	messages: {text: string}[] = [];
 	newMessage :string = '';
-  
+
 	sendMessage() {
 	  this.messages.push({text: this.newMessage});
 	  this.newMessage = '';

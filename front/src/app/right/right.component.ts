@@ -23,14 +23,16 @@ export class RightComponent implements OnInit {
 		// if (this.channel_n)
 		//   this.chatservice.createChannel(this.channel_n);
 	}
+
+	loadProfil(){
+
+	}
 	  
 	ngOnInit(): void {
 		this.currentUser.getCurrenUserB().subscribe(data => {
 			this.MyUser = data;
-			console.log(this.MyUser);
 			this.createChannel();
-
 		});
-
 	}
+
 }

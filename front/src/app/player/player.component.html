@@ -1,18 +1,17 @@
-<div class="container-flex" style="height: 100%; width: 100%;">
-	<div class="container" style="height: 30%; width : 100%; overflow: hidden; align-items: center; justify-content: center;">
-		<div class="c-1-item-1" style="display: flex;">
+<div class="container-flex">
+	<div class="header-img">
+		<div class="profil-img">
 			<img [src]="this.MyUser.avatar" alt="AVATAR" style="height: 100px; width: 100px; border-radius: 10px;">
-			<button>Upload Avatar</button>
-			<button (click)="onGet2FA()">Activate 2FA</button>
-			<div class="c-1-item-2" *ngIf="this.MyTFA" style="height: 250px; width: 250px; border-radius: 10px;">
-				<img [src]="MyTFA.qrcode">
-			</div>
 		</div>
-	</div>
-	<div class="container" style="height: 70%; width : 100%; background-color: blue;">
-		<div class="c-2-item-1">
-			<button >Activate boutton</button>
-			<button >Activate boutton</button>
+		<div class = "upload">
+			<button>cupload</button>
+		</div>
+		<div>
+			<form accept-charset="UTF-8" method="post"><input type="hidden">
+				<div class="mb-1 mb-2">
+				  <input class="width-full form-control" id="user_profile_name" placeholder="Name" aria-label="Name" name="" value="" spellcheck="false" data-ms-editor="true">
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

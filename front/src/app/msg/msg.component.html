@@ -1,16 +1,19 @@
 <div class="container-flex">
 	<div class="msg-ui mb-3">
 		<div class="msg-header">
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item" style="background-color: rgb(73, 73, 71);border-radius: 5px; min-height: 30px; display: block; margin: 10px;" *ngFor="let message of messages">
+			<ul class="list-group list-group-flush" #scrollMe>
+				<li class="list-group-item" *ngFor="let message of messages" [autofocus]="message.text">
 					{{ message.text }}
 				</li>
 		  </ul>
 		</div>
-		<div class="input-group mb-3">
-			<!-- <input type="text" class="form-control" placeholder="New message..." [(ngModel)]="'newMessage'">
-	  		<div class="input-group-append">
-		  		<button class="btn btn-primary" (click)="sendMessage()" >Send</button>
-	  	</div> -->
+		<div class="msg-footer">
+			<div class="msg-write">
+				<input type="text" class="form-control" placeholder="New message..." [(ngModel)]="newMessage">
+			</div>
+			<div class="msg-send">
+				<button class="btn" (click)="sendMessage()" >📨</button>
+			</div>
+		</div>
 	</div>
 </div>

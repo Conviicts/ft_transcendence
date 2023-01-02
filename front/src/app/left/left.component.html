@@ -1,4 +1,11 @@
-<div class="container">
-	<app-players *ngFor="let player of Players"[player]="player"></app-players>
+<div class="container-flex">
+	<div class="items">
+		players
+		<app-players *ngFor="let player of Players"[player]="player"></app-players>
+	</div>
+	<div class="items">
+		channel
+		<app-players *ngFor="let player of Players"[player]="player"></app-players>
+	</div>
 	<!-- <li *ngFor="let item of this.chatservice.channels">{{ item["id"] }}  {{ item["name"] }}</li> -->
 </div>

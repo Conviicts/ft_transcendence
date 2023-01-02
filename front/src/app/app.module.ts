@@ -47,6 +47,7 @@ export function tokenGetter() {
     PongComponent,
     LoginComponent,
     TokenComponent,
+	MsgComponent,
     PlayerComponent
   ],
   imports: [

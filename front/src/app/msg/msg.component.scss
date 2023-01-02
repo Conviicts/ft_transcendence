@@ -1,32 +1,75 @@
 .container-flex {
 	height: 100%;
-	background-color: #1E2126;
-	border-radius: 15px;
-	flex-direction: column;
+	width: 100%;
 }
 
 .msg-ui {
-	align-items: center;
 	height: 100%;
+	width: 100%;
+	color: grey;
+	display: flex;
+	flex-direction: column;
 	.msg-header {
 		height: 95%;
+		border-radius: 10px;
+		background-color: #1E2126;
+		align-items: center;
 	}
-	.list-group {
+	.msg-footer{
 		display: flex;
-		height: 100%;
-		overflow-y: scroll;
 		width: 100%;
-		align-items: center;
+		flex-direction: row;
+		border-radius: 10px;
+		margin-right: 3px;
+		margin-top: 3px;
+		.msg-write {
+			width: 90%;
+			border: none;
+			border-radius: 5px;
+			margin-right: 10px;
+			input {
+				background-color: #1E2126;
+				color: grey;
+				box-shadow: black 3px 3px 7px;
+				border: 5px;
+				border-radius: 10px;
+			}
+		}
+		.msg-send {
+			border-radius: 10px;
+			border: none;
+			.btn {
+				border-radius: 10px;
+				background-color: #1E2126;
+				color: grey;
+				box-shadow: black 3px 3px 7px;
+				&:active {
+					transform: translate(1px, 1px);
+					box-shadow: rgb(255, 255, 255) 3px 3px 7px;
+				}
+			}
+		}
 	}
-	.list-group {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-	.list-group::-webkit-scrollbar {
-		display: none;
-	}
-	.input-group {
-		align-items: center;
-		justify-content: center;
-	}
+}
+
+.list-group-item { 
+	background-color: rgb(73, 73, 71);border-radius: 5px; min-height: 30px; display: block; margin: 10px;
+}
+.list-group {
+	display: flex;
+	height: 100%;
+	overflow-y: scroll;
+	width: 100%;
+	align-items: center;
+}
+.list-group {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+.list-group::-webkit-scrollbar {
+	display: none;
+}
+.input-group {
+	align-items: center;
+	justify-content: center;
 }

@@ -25,6 +25,7 @@
     "bootstrap": "^5.2.3",
     "html-to-image": "^1.11.3",
     "jwt-decode": "^3.1.2",
+    "ngx-page-scroll-core": "^10.0.0",
     "ngx-socket-io": "^4.4.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

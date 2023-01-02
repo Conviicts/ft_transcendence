@@ -1,7 +1,7 @@
 <div class="container-flex">
 	<div class="my-card">
 		<div class="item-1">
-			<div class="flex-1">
+			<div class="flex-1" (click)="loadProfil()">
 				<img [src]="this.MyUser?.avatar">
 			</div>
 			<div class="flex-2">
@@ -17,11 +17,11 @@
 		</div>
 	</div>
 	<div class="my-card item-3">
-		<div class="container-flex">
-	Channel
-	<input type="text" #input (input)="channel_n = input.value">
-	<button (click)="createChannel()">new channel</button>
-</div>
+		<!-- <div class="container-flex"> -->
+	<!-- Channel -->
+	<!-- <input type="text" #input (input)="channel_n = input.value"> -->
+	<!-- <button (click)="createChannel()">new channel</button> -->
+	<!-- </div> -->
 	</div>
 	<div class="my-card item-4">
 		<p>Games : {{this.MyUser?._count?.games}}</p>

@@ -1,6 +1,6 @@
 .player-card {
-	background-color: #23272D;
-	box-shadow: rgb(0, 0, 0) 4px 4px 20px;
+	background-color:  #202060;
+	box-shadow: rgb(10,0, 0, 0) 2px 2px 5px;
 	box-sizing: border-box;
 	width: 100%;
 	border-radius: 15px;
@@ -30,7 +30,6 @@
 		padding: 5px 10px;
 		border: none;
 		height: 20px;
-		//box-shadow: rgb(0, 0, 0) 3px 3px 7px;
 		font-size: 100%;
 		font-weight: 100%;
 		border-radius: 15px;
@@ -41,20 +40,11 @@
 			box-shadow: rgb(246, 246, 247) 3px 3px 7px;
 		}
 		&:hover {
-			//background-color: antiquewhite;
 			box-shadow: rgb(5, 16, 60) 3px 3px 7px;
 		}
 	}
 }
 
 .online {
-	background-color: rgba(lightgreen, 0.4);
-	color: darkgreen;
-	/*button {
-		box-shadow: rgb(5, 16, 60) 3px 3px 7px;
-		color: darkgreen;
-		&:active {
-			box-shadow:  rgb(5, 16, 60) 0 0 5px;
-		}
-	}*/
+	box-shadow: rgb(12, 173, 12) 3px 3px 7px;
 }

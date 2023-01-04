@@ -6,13 +6,31 @@
 .msg-ui {
 	height: 100%;
 	width: 100%;
-	color: grey;
 	display: flex;
 	flex-direction: column;
+	.player-profil {
+		height: 50%;
+		width: 100%;
+		flex-direction: row;
+		display: flex;
+		.item-1{
+			flex: auto;
+			margin:5px;
+			background-color: #602080;
+			border-radius: 10px;
+
+		}
+		.item-2{
+			flex: auto;
+			margin:5px;
+			background-color: #602080;
+			border-radius: 10px;
+		}
+	}
 	.msg-header {
-		height: 95%;
+		height: 50%;
 		border-radius: 10px;
-		background-color: #1E2126;
+		background-color:  	#602080;
 		align-items: center;
 	}
 	.msg-footer{
@@ -27,10 +45,12 @@
 			border: none;
 			border-radius: 5px;
 			margin-right: 10px;
+			color: rgb(255, 255, 255);
+
 			input {
-				background-color: #1E2126;
-				color: grey;
-				box-shadow: black 3px 3px 7px;
+				background-color: #602080;
+				color: rgb(255, 255, 255);
+				box-shadow: rgb(30, 0, 0, 0) 4px 4px 20px;
 				border: 5px;
 				border-radius: 10px;
 			}
@@ -38,11 +58,12 @@
 		.msg-send {
 			border-radius: 10px;
 			border: none;
+			color: rgb(255, 255, 255);
 			.btn {
 				border-radius: 10px;
-				background-color: #1E2126;
-				color: grey;
-				box-shadow: black 3px 3px 7px;
+				background-color:#602080;
+				color: rgb(255, 255, 255);
+				box-shadow: rgb(30, 0, 0, 0) 4px 4px 20px;
 				&:active {
 					transform: translate(1px, 1px);
 					box-shadow: rgb(255, 255, 255) 3px 3px 7px;
@@ -53,8 +74,14 @@
 }
 
 .list-group-item { 
-	background-color: rgb(73, 73, 71);border-radius: 5px; min-height: 30px; display: block; margin: 10px;
+	background-color:  #202060;
+	color: rgb(255, 255, 255);
+	border-radius: 5px;
+	min-height: 30px;
+	display: block;
+	margin: 10px;
 }
+
 .list-group {
 	display: flex;
 	height: 100%;

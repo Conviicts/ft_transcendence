@@ -1,26 +1,22 @@
 .container {
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	min-width: 1000px;
-	min-height: 600px;
 }
 
 #left {
-	background-color: #1E2126;
+	background-color: #602080;
 	padding: 15px;
 	border-top-left-radius: 15px;
 	border-bottom-left-radius: 15px;
 }
 
 #middle {
-	background-color: #16191C;
+	background-color:  #202060;
 	padding: 15px;
 }
 
 #right {
-	background-color: #1E2126;
+	background-color: #602080;
 	padding: 15px;
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
